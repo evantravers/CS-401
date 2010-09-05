@@ -3,7 +3,7 @@
 // MicroScala programming language.
 
 public enum TokenClass {
-	// TODO Change all of these
+	// CHANGED Change all of these
 	// keywords
 	EOF, OBJECT, DEF, MAIN, ARGS, ARRAY, STRING, VAR, IF, ELSE, WHILE, PRINT, RETURN, INT, LIST, NOT, HEAD, TAIL, ISEMPTY
 	// operators
