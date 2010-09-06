@@ -55,6 +55,7 @@ public class Token {
 		case AND :     		return "(operator, &&) ";
 		case OR :     		return "(operator, ||) ";
 		case EQ :     		return "(operator, =) ";
+		case EQU :     		return "(operator, ==) ";
 		case LT :     		return "(operator, <) ";
 		case GT :     		return "(operator, >) ";
 		case NE :     		return "(operator, !=) ";
