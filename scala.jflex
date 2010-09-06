@@ -27,7 +27,9 @@ def					{ echo(); return new Token (TokenClass.DEF);}
 main				{ echo(); return new Token (TokenClass.MAIN);}        
 args				{ echo(); return new Token (TokenClass.ARGS);}		   
 array				{ echo(); return new Token (TokenClass.ARRAY);} 	   
-String				{ echo(); return new Token (TokenClass.STRING);} 	   
+String				{ echo(); return new Token (TokenClass.STRING);} 	 
+Int					{ echo(); return new Token (TokenClass.INT);}  
+List				{ echo(); return new Token (TokenClass.LIST);}
 var					{ echo(); return new Token (TokenClass.VAR);} 		   
 if 					{ echo(); return new Token (TokenClass.IF);}		   
 else				{ echo(); return new Token (TokenClass.ELSE);} 	   

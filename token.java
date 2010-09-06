@@ -45,12 +45,6 @@ public class Token {
 		case MINUS :		return "(operator, -) ";
 		case TIMES :    	return "(operator, *) ";
       	case SLASH :     	return "(operator, /) ";
-		case LPAREN :    	return "(operator, () ";
-      	case RPAREN :    	return "(operator, )) ";
-		case LBRAC :    	return "(operator, [) ";
-      	case RBRAC :    	return "(operator, ]) ";
-		case LCURL :    	return "(operator, {) ";
-      	case RCURL :    	return "(operator, }) ";
 		case NOT :     		return "(operator, !) ";
 		case AND :     		return "(operator, &&) ";
 		case OR :     		return "(operator, ||) ";
@@ -61,6 +55,12 @@ public class Token {
 		case NE :     		return "(operator, !=) ";
 		case LE :     		return "(operator, <=) ";
 		case GE :     		return "(operator, >=) ";
+		case LPAREN :    	return "(punctuation, () ";
+      	case RPAREN :    	return "(punctuation, )) ";
+		case LBRAC :    	return "(punctuation, [) ";
+      	case RBRAC :    	return "(punctuation, ]) ";
+		case LCURL :    	return "(punctuation, {) ";
+      	case RCURL :    	return "(punctuation, }) ";
 		case COMMA :    	return "(punctuation, ,) ";
 		case PERIOD :   	return "(punctuation, .) ";
 		case COLON :		return "(punctuation, :) ";
