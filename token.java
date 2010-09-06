@@ -52,6 +52,8 @@ public class Token {
 		case LCURL :    	return "(operator, {) ";
       	case RCURL :    	return "(operator, }) ";
 		case NOT :     		return "(operator, !) ";
+		case AND :     		return "(operator, &&) ";
+		case OR :     		return "(operator, ||) ";
 		case EQ :     		return "(operator, =) ";
 		case LT :     		return "(operator, <) ";
 		case GT :     		return "(operator, >) ";

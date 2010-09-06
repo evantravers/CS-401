@@ -44,6 +44,9 @@ return  			{ echo(); return new Token (TokenClass.RETURN);}
 "]" 				{ echo(); return new Token (TokenClass.RBRAC);}     
 "{" 				{ echo(); return new Token (TokenClass.LCURL);}      
 "}" 				{ echo(); return new Token (TokenClass.RCURL);}
+"!" 				{ echo(); return new Token (TokenClass.NOT);}  
+"&&" 				{ echo(); return new Token (TokenClass.AND);}  
+"||" 				{ echo(); return new Token (TokenClass.OR);} 
 "=" 				{ echo(); return new Token (TokenClass.EQ);}     	   
 "<" 				{ echo(); return new Token (TokenClass.LT);}     	   
 ">" 				{ echo(); return new Token (TokenClass.GT);}     	   
