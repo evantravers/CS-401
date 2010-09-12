@@ -1,0 +1,1083 @@
+Script started on Fri 10 Sep 2010 07:25:51 PM CDT
+vulcan6% java Assign2 < Test1.scala
+Source Program
+--------------
+
+// Test1.scala
+
+// Compute quotient and remainder by repeated subtraction.
+
+object Test1
+{
+  def main (args : Array [String]) {
+    var q : Int = 0;
+    var r : Int = 0;
+    var x : Int = 0;
+    var y : Int = 0;
+    x = 32; y = 5;
+    r = x;
+    while (r >= y)
+    {  
+      q = q + 1;
+      r = r - y;
+    }  
+    println (q);
+    println (r);
+  }
+}
+
+List of Tokens
+--------------
+
+(keyword, object) 
+(identifier, Test1) 
+(operator, {) 
+(keyword, def) 
+(keyword, main) 
+(operator, () 
+(keyword, args) 
+(punctuation, :) 
+(keyword, Array) 
+(operator, [) 
+(keyword, String) 
+(operator, ]) 
+(operator, )) 
+(operator, {) 
+(keyword, var) 
+(identifier, q) 
+(punctuation, :) 
+(keyword, Int) 
+(operator, =) 
+(integer, 0) 
+(punctuation, ;) 
+(keyword, var) 
+(identifier, r) 
+(punctuation, :) 
+(keyword, Int) 
+(operator, =) 
+(integer, 0) 
+(punctuation, ;) 
+(keyword, var) 
+(identifier, x) 
+(punctuation, :) 
+(keyword, Int) 
+(operator, =) 
+(integer, 0) 
+(punctuation, ;) 
+(keyword, var) 
+(identifier, y) 
+(punctuation, :) 
+(keyword, Int) 
+(operator, =) 
+(integer, 0) 
+(punctuation, ;) 
+(identifier, x) 
+(operator, =) 
+(integer, 32) 
+(punctuation, ;) 
+(identifier, y) 
+(operator, =) 
+(integer, 5) 
+(punctuation, ;) 
+(identifier, r) 
+(operator, =) 
+(identifier, x) 
+(punctuation, ;) 
+(keyword, while) 
+(operator, () 
+(identifier, r) 
+(operator, >) 
+(identifier, y) 
+(operator, )) 
+(operator, {) 
+(identifier, q) 
+(operator, =) 
+(identifier, q) 
+(operator, +) 
+(integer, 1) 
+(punctuation, ;) 
+(identifier, r) 
+(operator, =) 
+(identifier, r) 
+(operator, -) 
+(identifier, y) 
+(punctuation, ;) 
+(operator, }) 
+(keyword, println) 
+(operator, () 
+(identifier, q) 
+(operator, )) 
+(punctuation, ;) 
+(keyword, println) 
+(operator, () 
+(identifier, r) 
+(operator, )) 
+(punctuation, ;) 
+(operator, }) 
+(operator, }) 
+
+vulcan6% java Assign2 < Test2.scala
+Source Program
+--------------
+
+// Test2.scala
+
+// List manipulatioon operators.
+
+object Test2
+{
+  def main (args : Array [String]) {
+    var my_list : List [Int] = Nil;
+    var my_list_tl : List [Int] = Nil;
+    var r : Int = 0;
+    var h : Int = 0;
+    r = 2;
+    while (r < 5)
+    {  
+      my_list = r :: my_list;
+      r = r + 1;
+    }  
+    h = my_list . head;
+    my_list_tl = my_list . tail;
+    println (h);
+    println (my_list_tl . head);
+  }
+}
+ 
+
+List of Tokens
+--------------
+
+(keyword, object) 
+(identifier, Test2) 
+(operator, {) 
+(keyword, def) 
+(keyword, main) 
+(operator, () 
+(keyword, args) 
+(punctuation, :) 
+(keyword, Array) 
+(operator, [) 
+(keyword, String) 
+(operator, ]) 
+(operator, )) 
+(operator, {) 
+(keyword, var) 
+(identifier, my_list) 
+(punctuation, :) 
+(keyword, List) 
+(operator, [) 
+(keyword, Int) 
+(operator, ]) 
+(operator, =) 
+(keyword, Nil) 
+(punctuation, ;) 
+(keyword, var) 
+(identifier, my_list_tl) 
+(punctuation, :) 
+(keyword, List) 
+(operator, [) 
+(keyword, Int) 
+(operator, ]) 
+(operator, =) 
+(keyword, Nil) 
+(punctuation, ;) 
+(keyword, var) 
+(identifier, r) 
+(punctuation, :) 
+(keyword, Int) 
+(operator, =) 
+(integer, 0) 
+(punctuation, ;) 
+(keyword, var) 
+(identifier, h) 
+(punctuation, :) 
+(keyword, Int) 
+(operator, =) 
+(integer, 0) 
+(punctuation, ;) 
+(identifier, r) 
+(operator, =) 
+(integer, 2) 
+(punctuation, ;) 
+(keyword, while) 
+(operator, () 
+(identifier, r) 
+(operator, <) 
+(integer, 5) 
+(operator, )) 
+(operator, {) 
+(identifier, my_list) 
+(operator, =) 
+(identifier, r) 
+(operator, ::) 
+(identifier, my_list) 
+(punctuation, ;) 
+(identifier, r) 
+(operator, =) 
+(identifier, r) 
+(operator, +) 
+(integer, 1) 
+(punctuation, ;) 
+(operator, }) 
+(identifier, h) 
+(operator, =) 
+(identifier, my_list) 
+(punctuation, .) 
+(operator, head) 
+(punctuation, ;) 
+(identifier, my_list_tl) 
+(operator, =) 
+(identifier, my_list) 
+(punctuation, .) 
+(operator, tail) 
+(punctuation, ;) 
+(keyword, println) 
+(operator, () 
+(identifier, h) 
+(operator, )) 
+(punctuation, ;) 
+(keyword, println) 
+(operator, () 
+(identifier, my_list_tl) 
+(punctuation, .) 
+(operator, head) 
+(operator, )) 
+(punctuation, ;) 
+(operator, }) 
+(operator, }) 
+
+vulcan6% java Assign2 < Test3.scala
+Source Program
+--------------
+
+// Test3.scala
+
+// Non-recursive function.
+
+object Test3
+{
+  var h : Int = 0;  // global variable
+
+  def area (x : Int, y : Int) : Int =
+  {
+     var z : Int = 0;
+     z = 2 * (x * y + (x * h) + y * h);
+     return z;
+  }
+
+  def main (args : Array [String]) {
+    var a : Int = 0; 
+    var b : Int = 0; 
+    var s : Int = 0;
+    a = 3; b = 4;
+    h = 5;
+    s = area (a, b);
+    println (s);
+  }
+}
+
+List of Tokens
+--------------
+
+(keyword, object) 
+(identifier, Test3) 
+(operator, {) 
+(keyword, var) 
+(identifier, h) 
+(punctuation, :) 
+(keyword, Int) 
+(operator, =) 
+(integer, 0) 
+(punctuation, ;) 
+(keyword, def) 
+(identifier, area) 
+(operator, () 
+(identifier, x) 
+(punctuation, :) 
+(keyword, Int) 
+(punctuation, ,) 
+(identifier, y) 
+(punctuation, :) 
+(keyword, Int) 
+(operator, )) 
+(punctuation, :) 
+(keyword, Int) 
+(operator, =) 
+(operator, {) 
+(keyword, var) 
+(identifier, z) 
+(punctuation, :) 
+(keyword, Int) 
+(operator, =) 
+(integer, 0) 
+(punctuation, ;) 
+(identifier, z) 
+(operator, =) 
+(integer, 2) 
+(operator, *) 
+(operator, () 
+(identifier, x) 
+(operator, *) 
+(identifier, y) 
+(operator, +) 
+(operator, () 
+(identifier, x) 
+(operator, *) 
+(identifier, h) 
+(operator, )) 
+(operator, +) 
+(identifier, y) 
+(operator, *) 
+(identifier, h) 
+(operator, )) 
+(punctuation, ;) 
+(keyword, return) 
+(identifier, z) 
+(punctuation, ;) 
+(operator, }) 
+(keyword, def) 
+(keyword, main) 
+(operator, () 
+(keyword, args) 
+(punctuation, :) 
+(keyword, Array) 
+(operator, [) 
+(keyword, String) 
+(operator, ]) 
+(operator, )) 
+(operator, {) 
+(keyword, var) 
+(identifier, a) 
+(punctuation, :) 
+(keyword, Int) 
+(operator, =) 
+(integer, 0) 
+(punctuation, ;) 
+(keyword, var) 
+(identifier, b) 
+(punctuation, :) 
+(keyword, Int) 
+(operator, =) 
+(integer, 0) 
+(punctuation, ;) 
+(keyword, var) 
+(identifier, s) 
+(punctuation, :) 
+(keyword, Int) 
+(operator, =) 
+(integer, 0) 
+(punctuation, ;) 
+(identifier, a) 
+(operator, =) 
+(integer, 3) 
+(punctuation, ;) 
+(identifier, b) 
+(operator, =) 
+(integer, 4) 
+(punctuation, ;) 
+(identifier, h) 
+(operator, =) 
+(integer, 5) 
+(punctuation, ;) 
+(identifier, s) 
+(operator, =) 
+(identifier, area) 
+(operator, () 
+(identifier, a) 
+(punctuation, ,) 
+(identifier, b) 
+(operator, )) 
+(punctuation, ;) 
+(keyword, println) 
+(operator, () 
+(identifier, s) 
+(operator, )) 
+(punctuation, ;) 
+(operator, }) 
+(operator, }) 
+
+vulcan6% java Assign2 < Test4.scala
+Source Program
+--------------
+
+// Test4.scala
+
+// Recursive factorial function.
+
+object Test4
+{
+  def facto (x : Int) : Int =
+  {
+    var s : Int = 0;
+    if (x == 1)
+      s = 1;
+    else
+      s = x * facto (x - 1);
+    return s;
+  }
+
+  def main (args : Array [String])
+  {
+    var i : Int = 0;
+    var fac : Int = 0;
+    i = 4;
+    fac = facto (i);
+    println (fac);
+  }
+}
+
+List of Tokens
+--------------
+
+(keyword, object) 
+(identifier, Test4) 
+(operator, {) 
+(keyword, def) 
+(identifier, facto) 
+(operator, () 
+(identifier, x) 
+(punctuation, :) 
+(keyword, Int) 
+(operator, )) 
+(punctuation, :) 
+(keyword, Int) 
+(operator, =) 
+(operator, {) 
+(keyword, var) 
+(identifier, s) 
+(punctuation, :) 
+(keyword, Int) 
+(operator, =) 
+(integer, 0) 
+(punctuation, ;) 
+(keyword, if) 
+(operator, () 
+(identifier, x) 
+(operator, ==) 
+(integer, 1) 
+(operator, )) 
+(identifier, s) 
+(operator, =) 
+(integer, 1) 
+(punctuation, ;) 
+(keyword, else) 
+(identifier, s) 
+(operator, =) 
+(identifier, x) 
+(operator, *) 
+(identifier, facto) 
+(operator, () 
+(identifier, x) 
+(operator, -) 
+(integer, 1) 
+(operator, )) 
+(punctuation, ;) 
+(keyword, return) 
+(identifier, s) 
+(punctuation, ;) 
+(operator, }) 
+(keyword, def) 
+(keyword, main) 
+(operator, () 
+(keyword, args) 
+(punctuation, :) 
+(keyword, Array) 
+(operator, [) 
+(keyword, String) 
+(operator, ]) 
+(operator, )) 
+(operator, {) 
+(keyword, var) 
+(identifier, i) 
+(punctuation, :) 
+(keyword, Int) 
+(operator, =) 
+(integer, 0) 
+(punctuation, ;) 
+(keyword, var) 
+(identifier, fac) 
+(punctuation, :) 
+(keyword, Int) 
+(operator, =) 
+(integer, 0) 
+(punctuation, ;) 
+(identifier, i) 
+(operator, =) 
+(integer, 4) 
+(punctuation, ;) 
+(identifier, fac) 
+(operator, =) 
+(identifier, facto) 
+(operator, () 
+(identifier, i) 
+(operator, )) 
+(punctuation, ;) 
+(keyword, println) 
+(operator, () 
+(identifier, fac) 
+(operator, )) 
+(punctuation, ;) 
+(operator, }) 
+(operator, }) 
+
+vulcan6% java Assign2 < Test5.scala
+Source Program
+--------------
+
+// Test5.scala
+
+// A simple recursive function on lists.
+
+object Test5 {
+
+  var my_list : List [Int] = Nil;
+
+  def cons_my_list (r : Int) : List [Int] =
+  {
+    if (r <= 10) {
+      my_list = r :: my_list;
+      my_list = cons_my_list (r + 1);
+    }
+    return my_list;
+  }
+
+  def main (args : Array [String])
+  {
+    var r : Int = 0;
+    r = 1;
+    my_list = Nil;
+    my_list = cons_my_list (r);
+    println (my_list . head);
+  }
+
+}
+
+List of Tokens
+--------------
+
+(keyword, object) 
+(identifier, Test5) 
+(operator, {) 
+(keyword, var) 
+(identifier, my_list) 
+(punctuation, :) 
+(keyword, List) 
+(operator, [) 
+(keyword, Int) 
+(operator, ]) 
+(operator, =) 
+(keyword, Nil) 
+(punctuation, ;) 
+(keyword, def) 
+(identifier, cons_my_list) 
+(operator, () 
+(identifier, r) 
+(punctuation, :) 
+(keyword, Int) 
+(operator, )) 
+(punctuation, :) 
+(keyword, List) 
+(operator, [) 
+(keyword, Int) 
+(operator, ]) 
+(operator, =) 
+(operator, {) 
+(keyword, if) 
+(operator, () 
+(identifier, r) 
+(operator, <=) 
+(integer, 10) 
+(operator, )) 
+(operator, {) 
+(identifier, my_list) 
+(operator, =) 
+(identifier, r) 
+(operator, ::) 
+(identifier, my_list) 
+(punctuation, ;) 
+(identifier, my_list) 
+(operator, =) 
+(identifier, cons_my_list) 
+(operator, () 
+(identifier, r) 
+(operator, +) 
+(integer, 1) 
+(operator, )) 
+(punctuation, ;) 
+(operator, }) 
+(keyword, return) 
+(identifier, my_list) 
+(punctuation, ;) 
+(operator, }) 
+(keyword, def) 
+(keyword, main) 
+(operator, () 
+(keyword, args) 
+(punctuation, :) 
+(keyword, Array) 
+(operator, [) 
+(keyword, String) 
+(operator, ]) 
+(operator, )) 
+(operator, {) 
+(keyword, var) 
+(identifier, r) 
+(punctuation, :) 
+(keyword, Int) 
+(operator, =) 
+(integer, 0) 
+(punctuation, ;) 
+(identifier, r) 
+(operator, =) 
+(integer, 1) 
+(punctuation, ;) 
+(identifier, my_list) 
+(operator, =) 
+(keyword, Nil) 
+(punctuation, ;) 
+(identifier, my_list) 
+(operator, =) 
+(identifier, cons_my_list) 
+(operator, () 
+(identifier, r) 
+(operator, )) 
+(punctuation, ;) 
+(keyword, println) 
+(operator, () 
+(identifier, my_list) 
+(punctuation, .) 
+(operator, head) 
+(operator, )) 
+(punctuation, ;) 
+(operator, }) 
+(operator, }) 
+
+vulcan6% java Assign2 < Test6.scala
+Source Program
+--------------
+
+// Test6.scala
+
+// Two recursive functions operating on lists.
+
+object Test6 {
+
+  def cons_a_list (r : Int, l : List [Int]) : List [Int] =
+  {
+    var my_list : List [Int] = Nil;
+    if (r != 0) {
+      my_list = r :: my_list;
+      my_list = cons_a_list (r - 1, my_list);
+    }
+    return my_list;
+  }
+
+  def equal (list1 : List [Int], list2 : List [Int]) : Int =
+  {
+    var l1 : List [Int] = Nil;
+    var l2 : List [Int] = Nil;
+    var my_flag : Int = 0;
+    l1 = list1; l2 = list2;
+    while (!l1 . isEmpty && !l2 . isEmpty && my_flag == 0) {
+      if (l1 . head != l2 . head)
+        my_flag=1;
+      else {
+        l1 = l1 . tail;
+        l2 = l2 . tail;
+        my_flag = equal (l1, l2);
+      }
+    }
+    if (l1 . isEmpty && l2 . isEmpty)
+      my_flag = 0;
+    else
+      my_flag = 1;
+    return my_flag;
+  }
+
+  def main (args : Array [String])
+  {
+    var r : Int = 0; 
+    var h : Int = 0;
+    var l1 : List [Int] = Nil; 
+    var l2 : List [Int] = Nil; 
+    var l3 : List [Int] = Nil;
+    var my_list : List [Int] = Nil;
+    r = 10;
+    l1 = cons_a_list (r, my_list);    
+    l2 = cons_a_list (r, my_list);  
+    r = r - 1;  
+    l3 = cons_a_list (r, my_list);  
+    if (equal (l1, l2) == 0)
+      h = 1; 
+    else 
+      h = 0;
+    if (equal (l1, l3) != 0) 
+      r = 1;
+    else 
+      r = 0;
+    println (h);
+    println (r);
+  }
+
+}
+
+List of Tokens
+--------------
+
+(keyword, object) 
+(identifier, Test6) 
+(operator, {) 
+(keyword, def) 
+(identifier, cons_a_list) 
+(operator, () 
+(identifier, r) 
+(punctuation, :) 
+(keyword, Int) 
+(punctuation, ,) 
+(identifier, l) 
+(punctuation, :) 
+(keyword, List) 
+(operator, [) 
+(keyword, Int) 
+(operator, ]) 
+(operator, )) 
+(punctuation, :) 
+(keyword, List) 
+(operator, [) 
+(keyword, Int) 
+(operator, ]) 
+(operator, =) 
+(operator, {) 
+(keyword, var) 
+(identifier, my_list) 
+(punctuation, :) 
+(keyword, List) 
+(operator, [) 
+(keyword, Int) 
+(operator, ]) 
+(operator, =) 
+(keyword, Nil) 
+(punctuation, ;) 
+(keyword, if) 
+(operator, () 
+(identifier, r) 
+(operator, !=) 
+(integer, 0) 
+(operator, )) 
+(operator, {) 
+(identifier, my_list) 
+(operator, =) 
+(identifier, r) 
+(operator, ::) 
+(identifier, my_list) 
+(punctuation, ;) 
+(identifier, my_list) 
+(operator, =) 
+(identifier, cons_a_list) 
+(operator, () 
+(identifier, r) 
+(operator, -) 
+(integer, 1) 
+(punctuation, ,) 
+(identifier, my_list) 
+(operator, )) 
+(punctuation, ;) 
+(operator, }) 
+(keyword, return) 
+(identifier, my_list) 
+(punctuation, ;) 
+(operator, }) 
+(keyword, def) 
+(identifier, equal) 
+(operator, () 
+(identifier, list1) 
+(punctuation, :) 
+(keyword, List) 
+(operator, [) 
+(keyword, Int) 
+(operator, ]) 
+(punctuation, ,) 
+(identifier, list2) 
+(punctuation, :) 
+(keyword, List) 
+(operator, [) 
+(keyword, Int) 
+(operator, ]) 
+(operator, )) 
+(punctuation, :) 
+(keyword, Int) 
+(operator, =) 
+(operator, {) 
+(keyword, var) 
+(identifier, l1) 
+(punctuation, :) 
+(keyword, List) 
+(operator, [) 
+(keyword, Int) 
+(operator, ]) 
+(operator, =) 
+(keyword, Nil) 
+(punctuation, ;) 
+(keyword, var) 
+(identifier, l2) 
+(punctuation, :) 
+(keyword, List) 
+(operator, [) 
+(keyword, Int) 
+(operator, ]) 
+(operator, =) 
+(keyword, Nil) 
+(punctuation, ;) 
+(keyword, var) 
+(identifier, my_flag) 
+(punctuation, :) 
+(keyword, Int) 
+(operator, =) 
+(integer, 0) 
+(punctuation, ;) 
+(identifier, l1) 
+(operator, =) 
+(identifier, list1) 
+(punctuation, ;) 
+(identifier, l2) 
+(operator, =) 
+(identifier, list2) 
+(punctuation, ;) 
+(keyword, while) 
+(operator, () 
+(operator, !) 
+(identifier, l1) 
+(punctuation, .) 
+(operator, isEmpty) 
+(operator, &&) 
+(operator, !) 
+(identifier, l2) 
+(punctuation, .) 
+(operator, isEmpty) 
+(operator, &&) 
+(identifier, my_flag) 
+(operator, ==) 
+(integer, 0) 
+(operator, )) 
+(operator, {) 
+(keyword, if) 
+(operator, () 
+(identifier, l1) 
+(punctuation, .) 
+(operator, head) 
+(operator, !=) 
+(identifier, l2) 
+(punctuation, .) 
+(operator, head) 
+(operator, )) 
+(identifier, my_flag) 
+(operator, =) 
+(integer, 1) 
+(punctuation, ;) 
+(keyword, else) 
+(operator, {) 
+(identifier, l1) 
+(operator, =) 
+(identifier, l1) 
+(punctuation, .) 
+(operator, tail) 
+(punctuation, ;) 
+(identifier, l2) 
+(operator, =) 
+(identifier, l2) 
+(punctuation, .) 
+(operator, tail) 
+(punctuation, ;) 
+(identifier, my_flag) 
+(operator, =) 
+(identifier, equal) 
+(operator, () 
+(identifier, l1) 
+(punctuation, ,) 
+(identifier, l2) 
+(operator, )) 
+(punctuation, ;) 
+(operator, }) 
+(operator, }) 
+(keyword, if) 
+(operator, () 
+(identifier, l1) 
+(punctuation, .) 
+(operator, isEmpty) 
+(operator, &&) 
+(identifier, l2) 
+(punctuation, .) 
+(operator, isEmpty) 
+(operator, )) 
+(identifier, my_flag) 
+(operator, =) 
+(integer, 0) 
+(punctuation, ;) 
+(keyword, else) 
+(identifier, my_flag) 
+(operator, =) 
+(integer, 1) 
+(punctuation, ;) 
+(keyword, return) 
+(identifier, my_flag) 
+(punctuation, ;) 
+(operator, }) 
+(keyword, def) 
+(keyword, main) 
+(operator, () 
+(keyword, args) 
+(punctuation, :) 
+(keyword, Array) 
+(operator, [) 
+(keyword, String) 
+(operator, ]) 
+(operator, )) 
+(operator, {) 
+(keyword, var) 
+(identifier, r) 
+(punctuation, :) 
+(keyword, Int) 
+(operator, =) 
+(integer, 0) 
+(punctuation, ;) 
+(keyword, var) 
+(identifier, h) 
+(punctuation, :) 
+(keyword, Int) 
+(operator, =) 
+(integer, 0) 
+(punctuation, ;) 
+(keyword, var) 
+(identifier, l1) 
+(punctuation, :) 
+(keyword, List) 
+(operator, [) 
+(keyword, Int) 
+(operator, ]) 
+(operator, =) 
+(keyword, Nil) 
+(punctuation, ;) 
+(keyword, var) 
+(identifier, l2) 
+(punctuation, :) 
+(keyword, List) 
+(operator, [) 
+(keyword, Int) 
+(operator, ]) 
+(operator, =) 
+(keyword, Nil) 
+(punctuation, ;) 
+(keyword, var) 
+(identifier, l3) 
+(punctuation, :) 
+(keyword, List) 
+(operator, [) 
+(keyword, Int) 
+(operator, ]) 
+(operator, =) 
+(keyword, Nil) 
+(punctuation, ;) 
+(keyword, var) 
+(identifier, my_list) 
+(punctuation, :) 
+(keyword, List) 
+(operator, [) 
+(keyword, Int) 
+(operator, ]) 
+(operator, =) 
+(keyword, Nil) 
+(punctuation, ;) 
+(identifier, r) 
+(operator, =) 
+(integer, 10) 
+(punctuation, ;) 
+(identifier, l1) 
+(operator, =) 
+(identifier, cons_a_list) 
+(operator, () 
+(identifier, r) 
+(punctuation, ,) 
+(identifier, my_list) 
+(operator, )) 
+(punctuation, ;) 
+(identifier, l2) 
+(operator, =) 
+(identifier, cons_a_list) 
+(operator, () 
+(identifier, r) 
+(punctuation, ,) 
+(identifier, my_list) 
+(operator, )) 
+(punctuation, ;) 
+(identifier, r) 
+(operator, =) 
+(identifier, r) 
+(operator, -) 
+(integer, 1) 
+(punctuation, ;) 
+(identifier, l3) 
+(operator, =) 
+(identifier, cons_a_list) 
+(operator, () 
+(identifier, r) 
+(punctuation, ,) 
+(identifier, my_list) 
+(operator, )) 
+(punctuation, ;) 
+(keyword, if) 
+(operator, () 
+(identifier, equal) 
+(operator, () 
+(identifier, l1) 
+(punctuation, ,) 
+(identifier, l2) 
+(operator, )) 
+(operator, ==) 
+(integer, 0) 
+(operator, )) 
+(identifier, h) 
+(operator, =) 
+(integer, 1) 
+(punctuation, ;) 
+(keyword, else) 
+(identifier, h) 
+(operator, =) 
+(integer, 0) 
+(punctuation, ;) 
+(keyword, if) 
+(operator, () 
+(identifier, equal) 
+(operator, () 
+(identifier, l1) 
+(punctuation, ,) 
+(identifier, l3) 
+(operator, )) 
+(operator, !=) 
+(integer, 0) 
+(operator, )) 
+(identifier, r) 
+(operator, =) 
+(integer, 1) 
+(punctuation, ;) 
+(keyword, else) 
+(identifier, r) 
+(operator, =) 
+(integer, 0) 
+(punctuation, ;) 
+(keyword, println) 
+(operator, () 
+(identifier, h) 
+(operator, )) 
+(punctuation, ;) 
+(keyword, println) 
+(operator, () 
+(identifier, r) 
+(operator, )) 
+(punctuation, ;) 
+(operator, }) 
+(operator, }) 
+
+vulcan6% exit
+
+Script done on Fri 10 Sep 2010 07:27:01 PM CDT
