@@ -58,13 +58,15 @@ public class Parser {
 	// Def
 	public void Def() throws java.io.IOException {
 		if (token.symbol()==TokenClass.VAR) {
-			// this is a var
+			// this is a vardef			
+			VarDef();
 		}
 		
 		if (token.symbol()==TokenClass.DEF) {
 			getToken();
 			if (token.symbol()==TokenClass.MAIN) {
 				// this is a main
+				// TODO add this main def
 			}
 			if (token.symbol()==TokenClass.ID) {
 				// normal def
@@ -114,9 +116,69 @@ public class Parser {
 				}
 				getToken();
 				
+				Type();
 				
+				if (token.symbol()!=TokenClass.ASSIGN) {
+					ErrorMessage.print("= expected");
+				}
+				getToken();
+				
+				if (token.symbol()!=TokenClass.LEFTBRACE) {
+					ErrorMessage.print("{ expected");
+				}
+				getToken();
+				
+				while (token.symbol()==TokenClass.VAR) {
+					VarDef();
+				}
+				
+				Statement();
+				
+				if (token.symbol()!=TokenClass.RETURN) {
+					ErrorMessage.print("return expected");
+				}
+				getToken();
+				
+				ListExpr();
+				
+				if (token.symbol()!=TokenClass.SEMICOLON) {
+					ErrorMessage.print("; expected");
+				}
+				getToken();
+				
+				if (token.symbol()!=TokenClass.RIGHTBRACE) {
+					ErrorMessage.print("} expected");
+				}
+				getToken();
 			}
 		}
+		
+	}
+	
+	public void VarDef() throws java.io.IOException {
+		if (token.symbol()!=TokenClass.ID) {
+			ErrorMessage.print("ID expected");
+		}
+		getToken();
+		
+		if (token.symbol()!=TokenClass.COLON) {
+			ErrorMessage.print(": expected");
+		}
+		getToken();
+		
+		Type();
+
+		if (token.symbol()!=TokenClass.RELOP&&token.lexeme()!="=") {
+			ErrorMessage.print("= expected");
+		}
+		getToken();
+		
+		Literal();
+		
+		if (token.symbol()!=TokenClass.SEMICOLON) {
+			ErrorMessage.print("; expected");
+		}
+		getToken();
 	}
 	
 	public void Type() throws java.io.IOException {
@@ -143,8 +205,18 @@ public class Parser {
 		}
 	}
 	
-	public void Literal() {
-		System.out.println("literal");
+	public void Literal() throws java.io.IOException {
+		if (token.symbol()!=TokenClass.INTEGER) {
+			if (token.symbol()!=TokenClass.NIL) {
+				ErrorMessage.print("Integer expected");
+			}
+			else {
+				getToken();
+			}
+		}
+		else {
+			getToken();
+		}
 	}
 	
 	public void Statement() {
