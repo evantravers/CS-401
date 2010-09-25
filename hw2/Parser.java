@@ -41,7 +41,12 @@ public class Parser {
 		
 		// one or more defs
 		while (token.symbol()==TokenClass.DEF||token.symbol()==TokenClass.VAR) {
-			Def();
+			if (token.symbol()==TokenClass.DEF) {
+				Def();
+			}
+			else {
+				VarDef();
+			}
 		}
 		
 		// }
@@ -114,11 +119,11 @@ public class Parser {
 				VarDef();
 			}
 			
-			Statement();
-			
-			while (token.symbol()==TokenClass.IF || token.symbol()==TokenClass.WHILE || token.symbol()==TokenClass.ID || token.symbol()==TokenClass.PRINTLN || token.symbol()==TokenClass.LEFTBRACE) {
+			do {
 				Statement();
 			}
+			while (token.symbol()==TokenClass.IF || token.symbol()==TokenClass.WHILE || token.symbol()==TokenClass.ID || token.symbol()==TokenClass.PRINTLN || token.symbol()==TokenClass.LEFTBRACE);
+			
 			if (token.symbol()!=TokenClass.RIGHTBRACE) {
 				ErrorMessage.print("} expected, current token is " + token.symbol() + " with the lexeme " + token.lexeme());
 			}
@@ -331,10 +336,15 @@ public class Parser {
 		else if (token.symbol()==TokenClass.LEFTBRACE) {
 			// { Statement {Statement} }
 			getToken();
-			Statement();
-			while (token.symbol()==TokenClass.IF || token.symbol()==TokenClass.WHILE || token.symbol()==TokenClass.ID || token.symbol()==TokenClass.PRINTLN || token.symbol()==TokenClass.LEFTBRACE) {
+			do {
 				Statement();
 			}
+			while (token.symbol()==TokenClass.IF || token.symbol()==TokenClass.WHILE || token.symbol()==TokenClass.ID || token.symbol()==TokenClass.PRINTLN || token.symbol()==TokenClass.LEFTBRACE);
+			
+			if (token.symbol()!=TokenClass.RIGHTBRACE) {
+				ErrorMessage.print("} expected, current token is " + token.lexeme());
+			}
+			getToken();
 		}
 		else {
 			ErrorMessage.print("Flaw in expected statement, current token is " + token.symbol() + " with the lexeme " + token.lexeme());
