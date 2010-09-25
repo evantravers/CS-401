@@ -258,96 +258,76 @@ public class Parser {
 	
 	public void Statement() throws java.io.IOException {
 		if (token.symbol()==TokenClass.IF) {
-			// if ( Expr ) Statement [else Statement]
-			
 			getToken();
 			if (token.symbol()!=TokenClass.LEFTPAREN) {
-				ErrorMessage.print("( expected, current token is " + token.symbol() + " with the lexeme " + token.lexeme());
+				ErrorMessage.print("( expected, current token is " + token.lexeme());
 			}
 			getToken();
-			
 			Expr();
-			
 			if (token.symbol()!=TokenClass.RIGHTPAREN) {
-				ErrorMessage.print(") expected, current token is " + token.symbol() + " with the lexeme " + token.lexeme());
+				ErrorMessage.print(") expected, current token is " + token.lexeme());
 			}
 			getToken();
-			
 			Statement();
-			
-			if (token.symbol()==TokenClass.ELSE) {
+			if (token.symbol()!=TokenClass.ELSE) {
 				getToken();
 				Statement();
 			}
-			getToken();
 		}
 		else if (token.symbol()==TokenClass.WHILE) {
-			// while ( Expr ) Statement
 			getToken();
-			
 			if (token.symbol()!=TokenClass.LEFTPAREN) {
-				ErrorMessage.print("( expected, current token is " + token.symbol() + " with the lexeme " + token.lexeme());
+				ErrorMessage.print("( expected, current token is " + token.lexeme());
 			}
 			getToken();
 			Expr();
-			
 			if (token.symbol()!=TokenClass.RIGHTPAREN) {
-				ErrorMessage.print(") expected, current token is " + token.symbol() + " with the lexeme " + token.lexeme());
+				ErrorMessage.print(") expected, current token is " + token.lexeme());
 			}
 			getToken();
-			
 			Statement();
-			getToken();
-			
 		}
 		else if (token.symbol()==TokenClass.ID) {
-			// id = ListExpr ;
 			getToken();
-			
 			if (token.symbol()!=TokenClass.ASSIGN) {
-				ErrorMessage.print("= expected, current token is " + token.symbol() + " with the lexeme " + token.lexeme());
+				ErrorMessage.print("= expected, current token is " + token.lexeme());
 			}
 			getToken();
-			
 			ListExpr();
+			if (token.symbol()!=TokenClass.SEMICOLON) {
+				ErrorMessage.print("; expected, current token is " + token.lexeme());
+			}
+			getToken();
 		}
 		else if (token.symbol()==TokenClass.PRINTLN) {
-			// println ( ListExpr ) ;
 			getToken();
-			
 			if (token.symbol()!=TokenClass.LEFTPAREN) {
-				ErrorMessage.print("( expected, current token is " + token.symbol() + " with the lexeme " + token.lexeme());
+				ErrorMessage.print("( expected, current token is " + token.lexeme());
 			}
 			getToken();
-			
 			ListExpr();
-			
 			if (token.symbol()!=TokenClass.RIGHTPAREN) {
-				ErrorMessage.print(") expected, current token is " + token.symbol() + " with the lexeme " + token.lexeme());
+				ErrorMessage.print(") expected, current token is " + token.lexeme());
 			}
 			getToken();
-			
 			if (token.symbol()!=TokenClass.SEMICOLON) {
-				ErrorMessage.print("; expected, current token is " + token.symbol() + " with the lexeme " + token.lexeme());
+				ErrorMessage.print("; expected, current token is " + token.lexeme());
 			}
 			getToken();
-			
 		}
 		else if (token.symbol()==TokenClass.LEFTBRACE) {
-			// { Statement {Statement} }
 			getToken();
 			do {
 				Statement();
 			}
 			while (token.symbol()==TokenClass.IF || token.symbol()==TokenClass.WHILE || token.symbol()==TokenClass.ID || token.symbol()==TokenClass.PRINTLN || token.symbol()==TokenClass.LEFTBRACE);
-			
 			if (token.symbol()!=TokenClass.RIGHTBRACE) {
 				ErrorMessage.print("} expected, current token is " + token.lexeme());
 			}
 			getToken();
 		}
 		else {
-			ErrorMessage.print("Flaw in expected statement, current token is " + token.symbol() + " with the lexeme " + token.lexeme());
+			ErrorMessage.print("Statement expected, current token is " + token.lexeme());
 		}
 	}
 	
@@ -434,12 +414,17 @@ public class Parser {
 			getToken();
 		}
 		SimpleExpr();
-		while (token.symbol()==TokenClass.LISTOP) {
+		while (token.symbol()==TokenClass.PERIOD) {
 			ListMethodCall();
 		}
 	}
 	
 	public void ListMethodCall() throws java.io.IOException {
+		if (token.symbol()!=TokenClass.PERIOD) {
+			ErrorMessage.print(". expected, current token is " + token.lexeme());
+		}
+		getToken();
+		
 		if (token.symbol()!=TokenClass.LISTOP) {
 			ErrorMessage.print("List Operand expected, current token is " + token.symbol() + " with the lexeme " + token.lexeme());
 		}
@@ -449,7 +434,6 @@ public class Parser {
 	public void SimpleExpr() throws java.io.IOException {
 		if (token.symbol()==TokenClass.NIL||token.symbol()==TokenClass.INTEGER) {
 			Literal();
-			getToken();
 		}
 		else if (token.symbol()==TokenClass.LEFTPAREN) {
 			// (Expr)
@@ -468,7 +452,7 @@ public class Parser {
 			if (token.symbol()==TokenClass.LEFTPAREN) {
 				getToken();
 				// should be an optional ListExpr
-				
+				ListExpr();
 				// followed by 0 or more list expr preceded by a comma
 				while (token.symbol()!=TokenClass.COMMA) {
 					getToken();
