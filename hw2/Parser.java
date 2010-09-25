@@ -20,7 +20,7 @@ public class Parser {
 
 	// compilationUnit parses MicroScala programs.
 	public void CompilationUnit () throws java.io.IOException {
-		// ob ject	id	{	{Def}	MainDef	}
+		// object id { {Def} MainDef	}
 		// object
 		if (token.symbol()!=TokenClass.OBJECT) {
 			ErrorMessage.print("object expected");
@@ -188,6 +188,11 @@ public class Parser {
 				}				
 				getToken();
 				ListExpr();
+				if (token.symbol()!=TokenClass.SEMICOLON) {
+					ErrorMessage.print("; expected, current token is " + token.lexeme());
+				}
+				getToken();
+				
 				if (token.symbol()!=TokenClass.RIGHTBRACE) {
 					ErrorMessage.print("} expected, current token is " + token.symbol() + " with the lexeme " + token.lexeme());
 				}
@@ -436,7 +441,7 @@ public class Parser {
 			Literal();
 		}
 		else if (token.symbol()==TokenClass.LEFTPAREN) {
-			// (Expr)
+			// (Expr
 			getToken();
 			Expr();
 			if (token.symbol()!=TokenClass.RIGHTPAREN) {
@@ -454,7 +459,7 @@ public class Parser {
 				// should be an optional ListExpr
 				ListExpr();
 				// followed by 0 or more list expr preceded by a comma
-				while (token.symbol()!=TokenClass.COMMA) {
+				while (token.symbol()==TokenClass.COMMA) {
 					getToken();
 					ListExpr();
 				}
