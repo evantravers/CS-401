@@ -274,7 +274,7 @@ public class Parser {
 			}
 			getToken();
 			Statement();
-			if (token.symbol()!=TokenClass.ELSE) {
+			if (token.symbol()==TokenClass.ELSE) {
 				getToken();
 				Statement();
 			}
