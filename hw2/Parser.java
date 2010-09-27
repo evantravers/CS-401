@@ -185,14 +185,21 @@ public class Parser {
 				while (token.symbol()==TokenClass.VAR) {
 					VarDef();
 				}
+				int stmtNum=0;
 				while (token.symbol()==TokenClass.IF || token.symbol()==TokenClass.WHILE || token.symbol()==TokenClass.ID || token.symbol()==TokenClass.PRINTLN || token.symbol()==TokenClass.LEFTBRACE) {
-					syntaxTree = new SyntaxTree(";", syntaxTree, Statement());
+					if (stmtNum==0) {
+						syntaxTree = Statement();
+					}
+					else {
+						syntaxTree = new SyntaxTree(";", syntaxTree, Statement());						
+					}
 				}
 				if (token.symbol()!=TokenClass.RETURN) {
 					ErrorMessage.print("Return expected, current token is " + token.symbol() + " with the lexeme " + token.lexeme());
 				}				
 				getToken();
-				ListExpr();
+				// TODO fix this.
+				syntaxTree= new SyntaxTree(";", syntaxTree, new SyntaxTree("RETURN", ListExpr()));
 				if (token.symbol()!=TokenClass.SEMICOLON) {
 					ErrorMessage.print("; expected, current token is " + token.lexeme());
 				}
@@ -211,6 +218,10 @@ public class Parser {
 		syntaxTree.print(defID);
 		System . out . println ();
 	    System . out . println ();
+	}
+	
+	public void MainDef() throws java.io.IOException {
+		
 	}
 	
 	public void VarDef() throws java.io.IOException {
@@ -511,6 +522,7 @@ public class Parser {
 			if (token.symbol()!=TokenClass.ID) {
 				ErrorMessage.print("ID expected, current token is " + token.symbol() + " with the lexeme " + token.lexeme());
 			}
+			String tmpID = token.lexeme();
 			syntaxTree = new SyntaxTree(token.lexeme());
 			getToken();
 			if (token.symbol()==TokenClass.LEFTPAREN) {
