@@ -7,8 +7,8 @@ import java.util.*;
 
 public class Parser {
 
-	protected MicroScalaLexer lexer;	// lexical analyzer
-	protected Token token;					 // current token
+	protected MicroScalaLexer lexer;		// lexical analyzer
+	protected Token token;					// current token
 
 	public Parser () throws java.io.IOException {
 		lexer = new MicroScalaLexer (System . in);
@@ -121,9 +121,15 @@ public class Parser {
 			while (token.symbol()==TokenClass.VAR) {
 				VarDef();
 			}
-			
+			int stmtNum=0;
 			do {
-				syntaxTree = new SyntaxTree(";", syntaxTree,Statement());
+				if (stmtNum==0) {
+					syntaxTree = Statement();
+					stmtNum++;
+				}
+				else {
+					syntaxTree = new SyntaxTree(";", syntaxTree, Statement());					
+				}
 			}
 			while (token.symbol()==TokenClass.IF || token.symbol()==TokenClass.WHILE || token.symbol()==TokenClass.ID || token.symbol()==TokenClass.PRINTLN || token.symbol()==TokenClass.LEFTBRACE);
 			
@@ -189,9 +195,11 @@ public class Parser {
 				while (token.symbol()==TokenClass.IF || token.symbol()==TokenClass.WHILE || token.symbol()==TokenClass.ID || token.symbol()==TokenClass.PRINTLN || token.symbol()==TokenClass.LEFTBRACE) {
 					if (stmtNum==0) {
 						syntaxTree = Statement();
+						stmtNum++;
 					}
 					else {
 						syntaxTree = new SyntaxTree(";", syntaxTree, Statement());						
+						stmtNum++;
 					}
 				}
 				if (token.symbol()!=TokenClass.RETURN) {

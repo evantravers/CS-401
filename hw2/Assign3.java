@@ -1,3 +1,4 @@
+// etravers@uab.edu
 // Assign3 class 
 // This class is a MicroScala parser which reads a MicroScala source 
 // program and outputs the set of syntax trees comprising that program's 

@@ -1,0 +1,3 @@
+To run, run:
+java Assign3 < Tests/Test[#].scala
+
