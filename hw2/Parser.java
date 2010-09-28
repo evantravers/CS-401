@@ -227,11 +227,7 @@ public class Parser {
 		System . out . println ();
 	    System . out . println ();
 	}
-	
-	public void MainDef() throws java.io.IOException {
 		
-	}
-	
 	public void VarDef() throws java.io.IOException {
 		if (token.symbol()!=TokenClass.VAR) {
 			ErrorMessage.print("Var expected, current token is " + token.symbol() + " with the lexeme " + token.lexeme());
@@ -357,8 +353,15 @@ public class Parser {
 		}
 		else if (token.symbol()==TokenClass.LEFTBRACE) {
 			getToken();
+			int stmtNum=0;
 			do {
-				syntaxTree= new SyntaxTree(";", syntaxTree, Statement());
+				if (stmtNum==0) {
+					syntaxTree=Statement();
+					stmtNum=1;
+				}
+				else {
+					syntaxTree= new SyntaxTree(";", syntaxTree, Statement());
+				}
 			}
 			while (token.symbol()==TokenClass.IF || token.symbol()==TokenClass.WHILE || token.symbol()==TokenClass.ID || token.symbol()==TokenClass.PRINTLN || token.symbol()==TokenClass.LEFTBRACE);
 			if (token.symbol()!=TokenClass.RIGHTBRACE) {
