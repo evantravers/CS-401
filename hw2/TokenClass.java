@@ -3,16 +3,13 @@
 // MicroScala programming language.
 
 public enum TokenClass {
-  EOF, 
-  // keywords
-  ARGS, ARRAY, DEF, ELSE, IF, INT, LIST, MAIN, NIL, OBJECT, PRINTLN, RETURN, 
-  STRING, VAR, WHILE,
-  // punctuation
-  COMMA, PERIOD, SEMICOLON, COLON, LEFTBRACE, RIGHTBRACE, 
-  LEFTBRACKET, RIGHTBRACKET,
-  // operators
-  LEFTPAREN, RIGHTPAREN, ASSIGN, OR, AND, NOT, CONS, RELOP, ADDOP, MULTOP, 
-  LISTOP,
-  // ids and integers
-  ID, INTEGER
+	// CHANGED Change all of these
+	// keywords
+	EOF, OBJECT, DEF, MAIN, ARGS, ARRAY, STRING, VAR, IF, ELSE, WHILE, PRINT, RETURN, INT, LIST, NOT, HEAD, TAIL, ISEMPTY
+	// operators
+	,DOT ,PLUS, MINUS, TIMES, SLASH, LPAREN, RPAREN, LBRAC, RBRAC, LCURL, RCURL, EQ, EQU, LT, GT, NE, LE, GE, AND, OR
+	// punctuation
+	,COMMA, PERIOD, COLON, SEMICOLON
+	// integer
+	,LITERAL, NIL, IDENTIFIER
 }

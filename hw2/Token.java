@@ -1,6 +1,5 @@
-// Token class definition
-// Token is a class to represent lexical tokens in the MicroScala programming 
-// language.
+// etravers@uab.edu
+// token class for microscala
 
 public class Token {
 
@@ -24,44 +23,54 @@ public class Token {
 
   public String toString () {
     switch (symbol) {
-      case ARGS :         return "(keyword, args) ";
-      case ARRAY :        return "(keyword, Array) ";
-      case DEF :          return "(keyword, def) ";
-      case ELSE :         return "(keyword, else) ";
-      case IF :           return "(keyword, if) ";
-      case INT :          return "(keyword, Int) ";
-      case LIST :         return "(keyword, List) ";
-      case MAIN :         return "(keyword, main) ";
-      case NIL :          return "(keyword, Nil) ";
-      case OBJECT :       return "(keyword, object) ";
-      case PRINTLN :      return "(keyword, println) ";
-      case RETURN :       return "(keyword, return) ";
-      case STRING :       return "(keyword, String) ";
-      case VAR :          return "(keyword, var) ";
-      case WHILE :        return "(keyword, while) ";
-      case ASSIGN :       return "(operator, =) ";
-      case AND :          return "(operator, &&) ";
-      case CONS :         return "(operator, ::) ";
-      case NOT :          return "(operator, !) ";
-      case OR :           return "(operator, ||) ";
-      case ADDOP :        return "(operator, " + lexeme + ") ";
-      case MULTOP :       return "(operator, " + lexeme + ") ";
-      case RELOP :        return "(operator, " + lexeme + ") ";
-      case LISTOP :       return "(operator, " + lexeme + ") ";
-      case LEFTPAREN :    return "(operator, () ";
-      case RIGHTPAREN :   return "(operator, )) ";
-      case LEFTBRACE :    return "(operator, {) ";
-      case RIGHTBRACE :   return "(operator, }) ";
-      case LEFTBRACKET :  return "(operator, [) ";
-      case RIGHTBRACKET : return "(operator, ]) ";
-      case COMMA :        return "(punctuation, ,) ";
-      case PERIOD :       return "(punctuation, .) ";
-      case SEMICOLON :    return "(punctuation, ;) ";
-      case COLON :        return "(punctuation, :) ";
-      case ID :           return "(identifier, " + lexeme + ") ";
-      case INTEGER :      return "(integer, " + lexeme + ") ";
-      default :           ErrorMessage . print (0, "Unrecognized token");
-                          return null;
+		case OBJECT :   	return "(keyword, object) ";
+		case DEF :      	return "(keyword, def) ";
+		case MAIN :     	return "(keyword, main)";
+		case ARGS :			return "(keyword, args)";
+		case ARRAY : 		return "(keyword, array)";
+		case INT : 			return "(keyword, int)";
+		case LIST : 		return "(keyword, list)";
+		case STRING : 		return "(keyword, string)";
+		case VAR : 			return "(keyword, var)";
+		case IF :			return "(keyword, if)";
+		case ELSE : 		return "(keyword, else)";
+		case WHILE : 		return "(keyword, while)";
+		case PRINT : 		return "(keyword, println)";
+		case RETURN : 		return "(keyword, return)";
+		case HEAD : 		return "(keyword, head)";
+		case TAIL :			return "(keyword, tail)";
+		case ISEMPTY : 		return "(keyword, isEmpty)";
+		case DOT : 			return "(operator, .)";
+		case PLUS :			return "(operator, +) ";
+		case MINUS :		return "(operator, -) ";
+		case TIMES :    	return "(operator, *) ";
+      	case SLASH :     	return "(operator, /) ";
+		case NOT :     		return "(operator, !) ";
+		case AND :     		return "(operator, &&) ";
+		case OR :     		return "(operator, ||) ";
+		case EQ :     		return "(operator, =) ";
+		case EQU :     		return "(operator, ==) ";
+		case LT :     		return "(operator, <) ";
+		case GT :     		return "(operator, >) ";
+		case NE :     		return "(operator, !=) ";
+		case LE :     		return "(operator, <=) ";
+		case GE :     		return "(operator, >=) ";
+		case LPAREN :    	return "(punctuation, () ";
+      	case RPAREN :    	return "(punctuation, )) ";
+		case LBRAC :    	return "(punctuation, [) ";
+      	case RBRAC :    	return "(punctuation, ]) ";
+		case LCURL :    	return "(punctuation, {) ";
+      	case RCURL :    	return "(punctuation, }) ";
+		case COMMA :    	return "(punctuation, ,) ";
+		case PERIOD :   	return "(punctuation, .) ";
+		case COLON :		return "(punctuation, :) ";
+		case SEMICOLON :	return "(punctuation, ;) ";
+		case LITERAL :  	return "(integer, " + lexeme + ") ";
+		case IDENTIFIER :   return "(identifier, " + lexeme + ") ";
+		case NIL :  		return "(nil) ";
+default : 
+	ErrorMessage . print (0, "Unrecognized token");
+        return null;
     }
   }
 

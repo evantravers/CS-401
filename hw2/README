@@ -1,3 +1,12 @@
-To run, run:
-java Assign3 < Tests/Test[#].scala
+To run this properly, you will need to compile Assign2.java, and run it giving it a test file as a CLI argument.
 
+1) javac Assign2.java
+2) java Assign2 Tests/Test6.scala
+
+Should you want to examine the output in another fashion than in the terminal, and you are on a linux machine, try 
+
+3) java Assign2 Tests/Test6.scala > [output file name]
+
+I have included all the original test files, as well as my Test6 output.
+
+For academic use only.
