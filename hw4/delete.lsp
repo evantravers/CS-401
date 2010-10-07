@@ -1,0 +1,15 @@
+(defun delete(elem in)
+	(cond
+		((null (car in)) nil)	
+		((atom (car in))
+			(if (inequal (car in) elem) (cons (car in) (delete elem (cdr in)))(delete elem (cdr in)))
+		)
+		((listp (car in))
+			(cons (delete elem (car in)) (delete elem (cdr in)))	
+		)
+	)
+)
+
+(defun inequal(elem1 elem2) 
+	(not (eq elem1 elem2))
+)
