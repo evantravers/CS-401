@@ -1,0 +1,90 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1038\cocoasubrtf320
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset128 HiraKakuProN-W3;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww13900\viewh17040\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\ql\qnatural\pardirnatural
+
+\f0\fs24 \cf0 \
+P	\{n\uc0\u8805 0\}\
+S1	count := n; \
+S2	sum := 0; \
+I	\{((n-count)*(n-count+1))/2\}\
+S3	while (count <> 0) loop\
+		sum := sum + count;\
+		count := count - 1; \
+	end loop;\
+Q	\{sum=count\}\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\ql\qnatural\pardirnatural
+\cf0 \
+Using axiomatic semantics, show that the assertion \{n\uc0\u8805 0\} S \{ sum = (n*(n+1))/2\}.\
+\
+In order to prove the program, we separate it at the point of the loop invariant, as follows composition rule.\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\ql\qnatural\pardirnatural
+\cf0 \{P\}S1;S2\{I\}, \{I\}S3\{R\}\
+---------------------------\
+   \{P\}S1; S2; S3\{R\}\
+\
+a) 	\{n\uc0\u8805 0\} count := n; sum := 0; \{((n-count)*(n-count+1))/2\}sum := sum + count;count := count - 1; \
+	we next use the Composition rule.\
+	\
+	\{n\uc0\u8805 0\}count := n;\{P2\},\{P2\}sum := 0;\{((n-count)*(n-count+1))/2\}sum := sum + count;count := count - 1; \
+	--------------------------------------------------------------------------------------------------------------------------\
+	  	 \{n\uc0\u8805 0\}count := n; sum := 0; sum := sum + count; count := count - 1; \
+\
+	To derive P2, we can use the axiom of Assignment on the statement sum:=0.\
+	\
+	\{0= ((n-count) X (n-count+1))/2\} sum :=0 \{sum=((n-count)x(n-count+1))/2\}\
+\
+	Therefore, P2 ~ 0 = ((n-count)*(n-count+1))/2=0\
+\
+	We must now show that  \{n\uc0\u8805 0\}count := n; sum := 0; sum := sum + count; count := count - 1. First we apply the Assignment axiom to derive the weakest precondition for the assignment, which we will refer to as P1.\
+\
+	\{0=((n-count)*(n-count+1))/2\}sum:=0\{1=( 2 ) & ((n-count)*(n-count+1))/2\}\
+\
+	Therefore, P1 is true.\
+\
+	Applying the consequence rule completes the proof of this part.\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\ql\qnatural\pardirnatural
+\cf0 	      			 n\uc0\u8805 0
+\f1 \'81\'cb
+\f0 true,\{true\}count := n;\{0=((n-count)*(n-count+1))/2\}\}\
+	      -------------------------------------------------------------------------------------------------------------------------\
+		\{n\uc0\u8805 0\}count := n;\{1=(sum := sum + count; count := count - 1; )2 & ((n-count)*(n-count+1))/2\}\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\ql\qnatural\pardirnatural
+\cf0 		\
+\
+b)	In order to use the Loop rule, we need the postcondition to have the form I & \'ac(count\uc0\u8800 0) ~ sum = count.\
+	\
+	Now we can use the loop rule.\
+\
+	\{I & \'ac(count\uc0\u8800 0)sum := sum + count;count := count - 1;\{I\}\
+	--------------------------------------------------------------------------\
+			\{I\}S3\{I & \'ac(count\uc0\u8800 0)\}\
+\
+	Followed immediately by the composition rule.\
+\
+	\{I & \'ac(count\uc0\u8800 0)\}sum := sum + count;\{P3\}, \{P3\}count := count - 1;\{I\}\
+	--------------------------------------------------------------------------------------\
+	       \{I & \'ac(count\uc0\u8800 0)\}sum := sum + count; count := count - 1\{I\}\
+\
+	Now we need to repeat the process above where we found P2 in order to discover P3, using the assignment axiom.\
+\
+	\{sum + count := ((n-count)*(n-count+1))/2=0\}\
+	sum:= sum + count\
+\
+	Therefore, P3 ~ sum+count = ((n-count)*(n-count+1))/2 =0\
+\
+	We apply the assignment axiom yet again to prove that \
+\
+	\{count - 1=((n-count)*(n-count+1))/2=0\}\
+		count := count - 1; \
+	\{count - 1=((n-count)*(n-count+1))/2=0\}\
+\
+	Applying the consequence rule again completes this proof.\
+\
+	I & \'ac(count\uc0\u8800 0)\},\{I\}sum := sum + count;\{sum+count=(count-1)2 &((n-count)*(n-count+1))/2\}\
+	-----------------------------------------------------------------------------------------------------------------\
+	\{I & \'ac(count\uc0\u8800 0)\}\}sum := sum + count;\{sum+count=(count-1)2 &((n-count)*(n-count+1))/2\}\
+}

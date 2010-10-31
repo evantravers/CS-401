@@ -1,0 +1,123 @@
+1.
+
+add = λm . λn . m succ n
+succ = λn . λx . λy . x (n x y)
+
+λM . λN . λx . λy . M x (N x y)
+
+// C1+2
+λx . λy . (λx1 . λy1 . (x1 y1)) x (λx2 . λy2 . x2(x2 y2)) x y)
+λx . λy . x (λx2 . λy2 . x2(x2 y2)) x y)
+λx . λy . x(x(x y))
+// C3
+
+2.
+
+Source code is contained in this zip, output of the test file (test.lsp) is copied below for convenience.
+
+Starts dribbling to output (2010/10/7, 12:10:28).
+"testing hextodec" 
+Loading hextodec.lsp
+Finished loading hextodec.lsp
+
+10 
+31 
+388350381470 
+"testing perfect" 
+Loading perfect.lsp
+Finished loading perfect.lsp
+
+(1 2 3) 
+NIL 
+(1 2 4 8 16 31 62 124 248) 
+"testing delete" 
+Loading delete.lsp
+Warning:
+DELETE is being redefined.
+Finished loading delete.lsp
+
+(B R C D B R) 
+(NO BS HERE) 
+((SECOND LEVEL) (THIRD NIL LEVEL) (((BIG))))
+
+3.
+
+<3,2>
+
+S1: input n;
+S2: count := n;
+S3: sum := 0;
+S4: while (count <> 0) loop
+S5: 	sum := sum + count;
+S6: 	count := count - 1;
+	end loop;
+S7: output sum;
+
+M[S1;S2;S3;S4;S7]<3,2>
+(S[S1;S2;S3;S4;S7]< λV.⊥,<3,2>, nil>) ↓ 3
+(S[S2; S3; S4; S7] (S[input n] < λV.⊥, <3, 2>, nil>)) ↓ 3
+(S[S2; S3; S4; S7] (if <3, 2> = nil then ⊤ else < λV.⊥[ hd(<3, 2>)/n], tl <3, 2>, nil>)) ↓ 3
+(S[S2; S3; S4; S7] < λV.⊥[hd(<3, 2>)/n], <2>, nil>) ↓ 3
+(S[S2; S3; S4; S7] < λV.⊥[3/n], <2>, nil>) ↓ 3
+(S[S3; S4; S7] (S[count := n] < λV.⊥[3/n], <2>, nil>)) ↓ 3
+(S[S3; S4; S7] (< λV.⊥[3/n][E[1] (λV.⊥[3/n])/count], <2>, nil>)) ↓ 3
+(S[S3; S4; S7] (< store1[N[1] /count], <2>, nil>)) ↓ 3 where store1 = λV.⊥[3/n]
+(S[S3; S4; S7] (< λV.⊥[3/n][0/count], <2>, nil>)) ↓ 3
+(S[S4; S7] (S[sum := 0] < λV.⊥[3/n][0/count], <2>, nil>)) ↓ 3
+(S[S4; S7] (< store2[E[1] store2)/sum], <2>, nil>)) ↓ 3, where store2 = λV.⊥[3/n][n/count]
+(S[S4; S7] (< store2[N[1] )/sum], <2>, nil>)) ↓ 3, where store2 = λV.⊥[3/n][n/count]
+(S[S4; S7] < λV.⊥[3/n][n/count][0/sum], <2>, nil>) ↓ 3
+(S[S7] (S[while (count <> 0) loop S5; S6 end loop] < λV.⊥[3/n][n/count][0/sum], <2>, nil>) ↓ 3
+
+(S[S7 ] 
+	(if C[count <> 0] (λV.⊥[3/n][n/count][0/sum]) then
+		S[S4](S[S5;S6]<λV.⊥[3/n][n/count][0/sum],<2>, nil>) 
+	else
+		< λV.⊥[3/n][n/count][0/sum], <2>, nil>)) ↓ 3
+		
+(S[S7 ] (if E[count] (λV.⊥[3/n][n/count][0/sum]) <> E[0] (λV.⊥[3/n][0/count][0/sum]) then
+		S[S4](S[S5;S6]<λV.⊥[3/n][n/count][0/sum],<2>, nil>) 
+	else
+		< λV.⊥[3/n][n/count][0/sum], <2>, nil>)) ↓ 3
+(S[S7 ] (if 3 <> E[0] store3 then
+		S[S4] (S[S5; S6]	< store3, <2>,	nil>) 
+	else
+		< store3, <2>, nil>)) ↓ 3 where store3 = λV.⊥[3/n][n/count][0/sum]
+(S[S7] (S[S4] (S[S5; S6] < λV.⊥[3/n][3/count][0/sum], <2>, nil>))) ↓ 3
+(S[S7](S[S4](S[S6](S[sum := sum + count]<λV.⊥[3/n][3/count][0/sum],<2>, nil>))))↓3
+(S[S7] (S[S4] (S[S6] (<λV.⊥[3/n][3/count][0/sum][E[sum+count](λV.⊥[3/n][3/count][0/sum])/sum],<2>, nil>))))↓3
+(S[S7](S[S4](S[count := count - 1;](λV.⊥[3/n][3/count][0/sum][3/sum],<2>, nil>))))↓3
+(S[S7] (S[S4 ] (λV.⊥[3/n][3/count][0/sum][3/sum][2/count], <2>, nil>))))↓3
+
+(S[S7 ] (if C[count <> 0] (λV.⊥[3/n][3/count][0/sum][3/sum][2/count]) then
+		S[S4](S[S5;S6]<λV.⊥[3/n][3/count][0/sum][3/sum][2/count],<2>, nil>)
+	else
+		< λV.⊥[3/n][3/count][0/sum][3/sum][2/count], <2>, nil>)) ↓ 3
+		
+(S[S7] (S[S4] (S[S5; S6] < λV.⊥[3/n][3/count][0/sum][3/sum][2/count][5/sum], <2>, nil>))) ↓ 3
+(S[S7] (S[S4] (λV.⊥[3/n][3/count][0/sum][3/sum][2/count][5/sum][1/count], <2>, nil>))))↓3
+
+(S[S7 ] (if C[count <> 0] (λV.⊥[3/n][3/count][0/sum][3/sum][2/count][5/sum][1/count]) then
+		S[S4](S[S5;S6]<λV.⊥[3/n][3/count][0/sum][3/sum][2/count][5/sum][1/count],<2>, nil>) 
+	else
+		< λV.⊥[3/n][3/count][0/sum][3/sum][2/count][5/sum][1/count], <2>, nil>)) ↓ 3
+
+(S[S7] (S[S4] (S[S5; S6] < λV.⊥[3/n][3/count][0/sum][3/sum][2/count][5/sum][6/sum], <2>, nil>))) ↓ 3
+(S[S7] (S[S4] (S[S5; S6] < λV.⊥[3/n][3/count][0/sum][3/sum][2/count][5/sum][6/sum][0/count], <2>, nil>))) ↓ 3
+
+(S[S7 ] (if C[count <> 0] (λV.⊥[3/n][3/count][0/sum][3/sum][2/count][5/sum][6/sum][0/count]) then
+		S[S4](S[S5;S6]<λV.⊥[3/n][3/count][0/sum][3/sum][2/count][5/sum][6/sum][0/count],<2>, nil>) 
+	else
+		< λV.⊥[3/n][3/count][0/sum][3/sum][2/count][5/sum][6/sum][0/count], <2>, nil>)) ↓ 3
+(S[output sum] < λV.⊥[3/n][3/count][0/sum][3/sum][2/count][5/sum][6/sum][0/count], <2>, nil>) ↓ 3
+
+(if (λV.⊥[3/n][3/count][0/sum][3/sum][2/count][5/sum][6/sum][0/count] = ⊥ then
+else
+⊤ < λV.⊥[3/n][3/count][0/sum][3/sum][2/count][5/sum][6/sum][0/count], <2>,
+append nil (list (λV.⊥[3/n][3/count][0/sum][3/sum][2/count][5/sum][6/sum][0/count][sum] ))>) ↓ 3
+
+(if 6 = ⊥ then ⊤
+else
+< λV.⊥[3/n][3/count][0/sum][3/sum][2/count][5/sum][6/sum][0/count], <2>, append nil (list 6)>)
+↓3 (< λV.⊥[3/n][3/count][0/sum][3/sum][2/count][5/sum][6/sum][0/count], <2>, <6>>) ↓ 3
+<6>

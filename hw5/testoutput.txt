@@ -1,0 +1,49 @@
+| ?- hextodec([a],D).
+
+D = 10.0 ? 
+
+yes
+| ?- hextodec([1,f],D).
+
+D = 31.0 ? 
+
+yes
+| ?- hextodec([5,a,6,b,7,c,8,d,9,e],D).
+
+D = 388350381470.0 ? 
+
+yes
+| ?- perfect(6, Factors).
+
+Factors = [1,2,3] ? 
+
+yes
+| ?- perfect(298, Factors).
+
+(1 ms) no
+| ?- 
+
+
+Prolog interruption (h for help) ? a
+execution aborted
+| ?- perfect(496, Factors).
+
+Factors = [1,2,4,8,16,31,62,124,248] ? 
+
+(2 ms) yes
+| ?- del(a, [a, b, r, a, c, a, d, a, b, r, a], List).   
+
+List = [b,r,c,d,b,r] ? 
+
+yes
+| ?- del(b, [no, bs, here], List).
+
+List = [no,bs,here] ? 
+
+yes
+| ?- del(nest, [nest, [second, nest, level], [third, [nest], level], [[[big, nest]]]], List).
+
+List = [[second,level],[third,[],level],[[[big]]]] ? 
+
+yes
+| ?- 
