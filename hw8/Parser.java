@@ -2,17 +2,15 @@
 // Parser is a class to represent a recursive descent parser for the 
 // MicroScala programming language.	The parser also constructs a 
 // syntax tree representation of all executable constructions.
-
-// TODO Handle simple expression equalities.
  
 import java.util.*;
 
-public class Parser2 {
+public class Parser {
 
 	protected MicroScalaLexer lexer;		// lexical analyzer
 	protected Token token;					// current token
 
-	public Parser2 () throws java.io.IOException {
+	public Parser () throws java.io.IOException {
 		lexer = new MicroScalaLexer (System . in);
 		getToken ();
 	}
@@ -22,10 +20,7 @@ public class Parser2 {
 	}
 
 	// compilationUnit parses MicroScala programs.
-	public CompEnvironment CompilationUnit () throws java.io.IOException {
-		CompEnvironment env;
-		VariableEnvironment varEnv=null;
-		String componentId;
+	public void CompilationUnit () throws java.io.IOException {
 		// object id { {Def} MainDef	}
 		// object
 		if (token.symbol()!=TokenClass.OBJECT) {
@@ -37,9 +32,6 @@ public class Parser2 {
 		if (token.symbol()!=TokenClass.ID) {
 			ErrorMessage.print("id expected");
 		}
-		componentId = token.lexeme();
-		env = new CompEnvironment(componentId);
-		varEnv = new VariableEnvironment (componentId);
 		getToken();
 		
 		// {
@@ -51,10 +43,10 @@ public class Parser2 {
 		// one or more defs
 		while (token.symbol()==TokenClass.DEF||token.symbol()==TokenClass.VAR) {
 			if (token.symbol()==TokenClass.DEF) {
-				Def(env);
+				Def();
 			}
 			else {
-				VarDef(varEnv);
+				VarDef();
 			}
 		}
 		
@@ -67,35 +59,25 @@ public class Parser2 {
 		if (token.symbol()!=TokenClass.EOF) {
 			ErrorMessage.print("EOF expected");			
 		}
-		varEnv.print();
-		return env;
 	}
 	
 	// Def	
-	public void Def(CompEnvironment env) throws java.io.IOException {
+	public void Def() throws java.io.IOException {
 		SyntaxTree syntaxTree=null;
 		String defID="";
-		Type defType=null;
-		DefDenot defDenot;
-		ArrayList <String> parameterList=null;
-		VariableEnvironment varEnv=null;
-		
 		if (token.symbol()!=TokenClass.DEF) {
 			ErrorMessage.print("Def expected, current token is " + token.symbol() + " with the lexeme " + token.lexeme());
 		}
 		getToken();
 		if (token.symbol()==TokenClass.MAIN) {
 			defID="MAIN";
-			varEnv = new VariableEnvironment (defID);
-			defType=Type.NULL;
 			// this is a maindef
 			getToken();
 			if (token.symbol()!=TokenClass.LEFTPAREN) {
 				ErrorMessage.print("( expected, current token is " + token.symbol() + " with the lexeme " + token.lexeme());
 			}
 			getToken();
-			// time to get the args
-			parameterList = new ArrayList <String> ();
+			
 			if (token.symbol()!=TokenClass.ARGS) {
 				ErrorMessage.print("args expected, current token is " + token.symbol() + " with the lexeme " + token.lexeme());
 			}
@@ -137,16 +119,16 @@ public class Parser2 {
 			getToken();
 			
 			while (token.symbol()==TokenClass.VAR) {
-				VarDef(varEnv);
+				VarDef();
 			}
 			int stmtNum=0;
 			do {
 				if (stmtNum==0) {
-					syntaxTree = Statement(varEnv);
+					syntaxTree = Statement();
 					stmtNum++;
 				}
 				else {
-					syntaxTree = new SyntaxTree(";", syntaxTree, Statement(varEnv));					
+					syntaxTree = new SyntaxTree(";", syntaxTree, Statement());					
 				}
 			}
 			while (token.symbol()==TokenClass.IF || token.symbol()==TokenClass.WHILE || token.symbol()==TokenClass.ID || token.symbol()==TokenClass.PRINTLN || token.symbol()==TokenClass.LEFTBRACE);
@@ -154,21 +136,20 @@ public class Parser2 {
 			if (token.symbol()!=TokenClass.RIGHTBRACE) {
 				ErrorMessage.print("} expected, current token is " + token.symbol() + " with the lexeme " + token.lexeme());
 			}
-			getToken();		
+			getToken();
+		
 		}
 		
 		else if (token.symbol()==TokenClass.ID) {
 			defID=token.lexeme();
-			varEnv = new VariableEnvironment (defID);
 			// normal def
 			getToken();
 			if (token.symbol()!=TokenClass.LEFTPAREN) {
 				ErrorMessage.print("( expected, current token is " + token.symbol() + " with the lexeme " + token.lexeme());
 			}
 			getToken();
-			parameterList = new ArrayList <String> ();
+			
 			if (token.symbol()==TokenClass.ID) {
-				String varID = token.lexeme();	
 				getToken();
 				
 				if (token.symbol()!=TokenClass.COLON) {
@@ -176,22 +157,19 @@ public class Parser2 {
 				}
 				getToken();
 				
-				Type varType = Type();
-				varEnv.update(varID, new ExpressibleValue (varType, null));
+				Type();
+				
 				while (token.symbol()==TokenClass.COMMA) {
 					getToken();
 					if (token.symbol()!=TokenClass.ID) {
 						ErrorMessage.print("ID expected, current token is " + token.symbol() + " with the lexeme " + token.lexeme());
 					}
-					varID = token.lexeme();
 					getToken();
 					if (token.symbol()!=TokenClass.COLON) {
 						ErrorMessage.print(": expected, current token is " + token.symbol() + " with the lexeme " + token.lexeme());
 					}
 					getToken();
-					varType = Type();
-					
-					varEnv.update(varID, new ExpressibleValue (varType, null)); 
+					Type();
 				}
 				if (token.symbol()!=TokenClass.RIGHTPAREN) {
 					ErrorMessage.print(") expected, current token is " + token.symbol() + " with the lexeme " + token.lexeme());
@@ -201,8 +179,7 @@ public class Parser2 {
 					ErrorMessage.print(": expected, current token is " + token.symbol() + " with the lexeme " + token.lexeme());
 				}
 				getToken();
-				// TODO this is where the return value of the def is set
-				defType = Type();
+				Type();
 				if (token.symbol()!=TokenClass.ASSIGN) {
 					ErrorMessage.print("= expected, current token is " + token.symbol() + " with the lexeme " + token.lexeme());
 				}
@@ -212,16 +189,16 @@ public class Parser2 {
 				}
 				getToken();
 				while (token.symbol()==TokenClass.VAR) {
-					VarDef(varEnv);
+					VarDef();
 				}
 				int stmtNum=0;
 				while (token.symbol()==TokenClass.IF || token.symbol()==TokenClass.WHILE || token.symbol()==TokenClass.ID || token.symbol()==TokenClass.PRINTLN || token.symbol()==TokenClass.LEFTBRACE) {
 					if (stmtNum==0) {
-						syntaxTree = Statement(varEnv);
+						syntaxTree = Statement();
 						stmtNum++;
 					}
 					else {
-						syntaxTree = new SyntaxTree(";", syntaxTree, Statement(varEnv));						
+						syntaxTree = new SyntaxTree(";", syntaxTree, Statement());						
 						stmtNum++;
 					}
 				}
@@ -244,21 +221,14 @@ public class Parser2 {
 		}
 		
 		else {
-			varEnv = new VariableEnvironment (defID);
-			VarDef(varEnv);
+			VarDef();
 		}
-		
-		defDenot = new DefDenot(parameterList, defType, varEnv, syntaxTree);
-		env.update(defID, defDenot);
-		// syntaxTree.print(defID);
+		syntaxTree.print(defID);
 		System . out . println ();
 	    System . out . println ();
 	}
 		
-	public String VarDef(VariableEnvironment env) throws java.io.IOException {
-		String varId;
-	    Type varType;
-	
+	public void VarDef() throws java.io.IOException {
 		if (token.symbol()!=TokenClass.VAR) {
 			ErrorMessage.print("Var expected, current token is " + token.symbol() + " with the lexeme " + token.lexeme());
 		}
@@ -267,7 +237,6 @@ public class Parser2 {
 		if (token.symbol()!=TokenClass.ID) {
 			ErrorMessage.print("ID expected, current token is " + token.symbol() + " with the lexeme " + token.lexeme());
 		}
-		varId = token.lexeme ();
 		getToken();
 		
 		if (token.symbol()!=TokenClass.COLON) {
@@ -275,7 +244,7 @@ public class Parser2 {
 		}
 		getToken();
 		
-		varType = Type();
+		Type();
 		
 		if (token.symbol()!=TokenClass.ASSIGN) {
 			ErrorMessage.print("= expected, current token is " + token.symbol() + " with the lexeme " + token.lexeme());
@@ -288,15 +257,12 @@ public class Parser2 {
 			ErrorMessage.print("; expected, current token is " + token.symbol() + " with the lexeme " + token.lexeme());
 		}
 		getToken();
-		// TODO this needs to have the value of the var in the null spot, taken from the literal.
-		env.update(varId, new ExpressibleValue (varType, null));
-	    return varId;
+		
 	}
 	
-	public Type Type() throws java.io.IOException {
+	public void Type() throws java.io.IOException {
 		if (token.symbol()==TokenClass.INT) {
 			getToken();
-			return Type.INT;
 		}
 		else if (token.symbol()==TokenClass.LIST) {
 			getToken();
@@ -312,15 +278,13 @@ public class Parser2 {
 				ErrorMessage.print("] expected");
 			}
 			getToken();
-			return Type.LIST;
 		}
 		else {
 			ErrorMessage.print("Type expected");
-			return null;
 		}
 	}
 	
-	public SyntaxTree Statement(VariableEnvironment env) throws java.io.IOException {
+	public SyntaxTree Statement() throws java.io.IOException {
 		SyntaxTree syntaxTree=null;
 		if (token.symbol()==TokenClass.IF) {
 			getToken();
@@ -333,10 +297,10 @@ public class Parser2 {
 				ErrorMessage.print(") expected, current token is " + token.lexeme());
 			}
 			getToken();
-			SyntaxTree result1 = Statement(env);
+			SyntaxTree result1 = Statement();
 			if (token.symbol()==TokenClass.ELSE) {
 				getToken();
-				SyntaxTree result2 = Statement(env);
+				SyntaxTree result2 = Statement();
 				
 				syntaxTree = new SyntaxTree("IF",tmpExpr,result1,result2);
 			}
@@ -355,12 +319,10 @@ public class Parser2 {
 				ErrorMessage.print(") expected, current token is " + token.lexeme());
 			}
 			getToken();
-			syntaxTree = new SyntaxTree("WHILE", tmpExpr, Statement(env));
+			syntaxTree = new SyntaxTree("WHILE", tmpExpr, Statement());
 		}
 		else if (token.symbol()==TokenClass.ID) {
-			// TODO handle this assignment statement here.
 			SyntaxTree tmpID = new SyntaxTree(token.lexeme());
-			String varID = token.lexeme();
 			getToken();
 			if (token.symbol()!=TokenClass.ASSIGN) {
 				ErrorMessage.print("= expected, current token is " + token.lexeme());
@@ -371,8 +333,6 @@ public class Parser2 {
 				ErrorMessage.print("; expected, current token is " + token.lexeme());
 			}
 			getToken();
-			// TODO fix this
-			// env.update(varID, new ExpressibleValue (Type.INT, null));
 		}
 		else if (token.symbol()==TokenClass.PRINTLN) {
 			getToken();
@@ -396,11 +356,11 @@ public class Parser2 {
 			int stmtNum=0;
 			do {
 				if (stmtNum==0) {
-					syntaxTree=Statement(env);
+					syntaxTree=Statement();
 					stmtNum=1;
 				}
 				else {
-					syntaxTree= new SyntaxTree(";", syntaxTree, Statement(env));
+					syntaxTree= new SyntaxTree(";", syntaxTree, Statement());
 				}
 			}
 			while (token.symbol()==TokenClass.IF || token.symbol()==TokenClass.WHILE || token.symbol()==TokenClass.ID || token.symbol()==TokenClass.PRINTLN || token.symbol()==TokenClass.LEFTBRACE);

@@ -5,7 +5,7 @@
 // executable functions. 
 import java.io.*;
 
-public class Assign3 {
+public class Driver  {
 
   public static void main (String args []) throws java.io.IOException {
 
@@ -13,9 +13,9 @@ public class Assign3 {
     System . out . println ("--------------");
     System . out . println ();
 
-    Parser parser = new Parser ();
-    parser . CompilationUnit ();
-
+    Parser2 parser = new Parser2 ();
+    CompEnvironment env = parser.CompilationUnit();
+	env.print();
   }
 
 }
