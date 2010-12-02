@@ -2,5 +2,5 @@
 
 public enum Type { 
   NULL, // used only for main def
-  INT, LIST 
+  INT, LIST, DEF
 }

@@ -22,8 +22,9 @@ public class Parser2 {
 	}
 
 	// compilationUnit parses MicroScala programs.
-	public CompEnvironment CompilationUnit () throws java.io.IOException {
-		CompEnvironment env;
+	public SyntaxTree CompilationUnit (Environment env) throws java.io.IOException {
+		// CompEnvironment env;
+		SyntaxTree tree = null;
 		VariableEnvironment varEnv=null;
 		String componentId;
 		// object id { {Def} MainDef	}
@@ -38,8 +39,8 @@ public class Parser2 {
 			ErrorMessage.print("id expected");
 		}
 		componentId = token.lexeme();
-		env = new CompEnvironment(componentId);
-		varEnv = new VariableEnvironment (componentId);
+		// env = new Enviroment();
+		// varEnv = new VariableEnvironment (componentId);
 		getToken();
 		
 		// {
@@ -51,10 +52,16 @@ public class Parser2 {
 		// one or more defs
 		while (token.symbol()==TokenClass.DEF||token.symbol()==TokenClass.VAR) {
 			if (token.symbol()==TokenClass.DEF) {
-				Def(env);
+				if (tree==null) {
+					tree = Def(env);
+				}
+				else {
+					// TODO examine whether putting "DEF" as the root here makes any difference
+					tree = new SyntaxTree("DEF", tree, Def(env));
+				}
 			}
 			else {
-				VarDef(varEnv);
+				VarDef(env);
 			}
 		}
 		
@@ -67,18 +74,19 @@ public class Parser2 {
 		if (token.symbol()!=TokenClass.EOF) {
 			ErrorMessage.print("EOF expected");			
 		}
-		varEnv.print();
-		return env;
+		// varEnv.print();
+		return tree;
+//		return env;
 	}
 	
 	// Def	
-	public void Def(CompEnvironment env) throws java.io.IOException {
+	public SyntaxTree Def(Environment env) throws java.io.IOException {
 		SyntaxTree syntaxTree=null;
 		String defID="";
 		Type defType=null;
 		DefDenot defDenot;
 		ArrayList <String> parameterList=null;
-		VariableEnvironment varEnv=null;
+		Environment varEnv=null;
 		
 		if (token.symbol()!=TokenClass.DEF) {
 			ErrorMessage.print("Def expected, current token is " + token.symbol() + " with the lexeme " + token.lexeme());
@@ -86,7 +94,7 @@ public class Parser2 {
 		getToken();
 		if (token.symbol()==TokenClass.MAIN) {
 			defID="MAIN";
-			varEnv = new VariableEnvironment (defID);
+			varEnv = new Environment(env);
 			defType=Type.NULL;
 			// this is a maindef
 			getToken();
@@ -177,7 +185,7 @@ public class Parser2 {
 				getToken();
 				
 				Type varType = Type();
-				varEnv.update(varID, new ExpressibleValue (varType, null));
+				varEnv.updateEnv(varID, new ExpressibleValue (varType, null));
 				while (token.symbol()==TokenClass.COMMA) {
 					getToken();
 					if (token.symbol()!=TokenClass.ID) {
@@ -191,7 +199,7 @@ public class Parser2 {
 					getToken();
 					varType = Type();
 					
-					varEnv.update(varID, new ExpressibleValue (varType, null)); 
+					varEnv.updateEnv(varID, new ExpressibleValue (varType, null)); 
 				}
 				if (token.symbol()!=TokenClass.RIGHTPAREN) {
 					ErrorMessage.print(") expected, current token is " + token.symbol() + " with the lexeme " + token.lexeme());
@@ -248,14 +256,15 @@ public class Parser2 {
 			VarDef(varEnv);
 		}
 		
-		defDenot = new DefDenot(parameterList, defType, varEnv, syntaxTree);
-		env.update(defID, defDenot);
+		// defDenot = new DefDenot(parameterList, defType, varEnv, syntaxTree);
+		env.updateEnvProc(defID, syntaxTree, varEnv);
 		// syntaxTree.print(defID);
 		System . out . println ();
 	    System . out . println ();
+		return syntaxTree;
 	}
 		
-	public String VarDef(VariableEnvironment env) throws java.io.IOException {
+	public void VarDef(Environment env) throws java.io.IOException {
 		String varId;
 	    Type varType;
 	
@@ -282,15 +291,15 @@ public class Parser2 {
 		}
 		getToken();
 		
-		Literal();
+		int tmp = Integer.parseInt(Literal().root());
 		
 		if (token.symbol()!=TokenClass.SEMICOLON) {
 			ErrorMessage.print("; expected, current token is " + token.symbol() + " with the lexeme " + token.lexeme());
 		}
 		getToken();
 		// TODO this needs to have the value of the var in the null spot, taken from the literal.
-		env.update(varId, new ExpressibleValue (varType, null));
-	    return varId;
+		// env.updateEnvVar(varId);
+		env.updateEnvVar(varId);
 	}
 	
 	public Type Type() throws java.io.IOException {
@@ -320,7 +329,7 @@ public class Parser2 {
 		}
 	}
 	
-	public SyntaxTree Statement(VariableEnvironment env) throws java.io.IOException {
+	public SyntaxTree Statement(Environment env) throws java.io.IOException {
 		SyntaxTree syntaxTree=null;
 		if (token.symbol()==TokenClass.IF) {
 			getToken();
@@ -359,7 +368,7 @@ public class Parser2 {
 		}
 		else if (token.symbol()==TokenClass.ID) {
 			// TODO handle this assignment statement here.
-			SyntaxTree tmpID = new SyntaxTree(token.lexeme());
+			SyntaxTree tmpID = new SyntaxTree("ID", new SyntaxTree(token.lexeme()));
 			String varID = token.lexeme();
 			getToken();
 			if (token.symbol()!=TokenClass.ASSIGN) {
@@ -574,7 +583,7 @@ public class Parser2 {
 				ErrorMessage.print("ID expected, current token is " + token.symbol() + " with the lexeme " + token.lexeme());
 			}
 			String tmpID = token.lexeme();
-			syntaxTree = new SyntaxTree(token.lexeme());
+			syntaxTree = new SyntaxTree("ID", new SyntaxTree(token.lexeme()));
 			getToken();
 			if (token.symbol()==TokenClass.LEFTPAREN) {
 				getToken();
