@@ -3,7 +3,7 @@
 // MicroScala programming language.	The parser also constructs a 
 // syntax tree representation of all executable constructions.
 
-// TODO Handle simple expression equalities.
+// TODO fix the scope numbers in the environment
  
 import java.util.*;
 
@@ -25,7 +25,7 @@ public class Parser2 {
 	public SyntaxTree CompilationUnit (Environment env) throws java.io.IOException {
 		// CompEnvironment env;
 		SyntaxTree tree = null;
-		VariableEnvironment varEnv=null;
+		// Environment varEnv = new Environment(env);
 		String componentId;
 		// object id { {Def} MainDef	}
 		// object
@@ -74,7 +74,7 @@ public class Parser2 {
 		if (token.symbol()!=TokenClass.EOF) {
 			ErrorMessage.print("EOF expected");			
 		}
-		// varEnv.print();
+		//env.print();
 		return tree;
 //		return env;
 	}
@@ -86,15 +86,12 @@ public class Parser2 {
 		Type defType=null;
 		DefDenot defDenot;
 		ArrayList <String> parameterList=null;
-		Environment varEnv=null;
-		
 		if (token.symbol()!=TokenClass.DEF) {
 			ErrorMessage.print("Def expected, current token is " + token.symbol() + " with the lexeme " + token.lexeme());
 		}
 		getToken();
 		if (token.symbol()==TokenClass.MAIN) {
 			defID="MAIN";
-			varEnv = new Environment(env);
 			defType=Type.NULL;
 			// this is a maindef
 			getToken();
@@ -145,16 +142,16 @@ public class Parser2 {
 			getToken();
 			
 			while (token.symbol()==TokenClass.VAR) {
-				VarDef(varEnv);
+				VarDef(env);
 			}
 			int stmtNum=0;
 			do {
 				if (stmtNum==0) {
-					syntaxTree = Statement(varEnv);
+					syntaxTree = Statement(env);
 					stmtNum++;
 				}
 				else {
-					syntaxTree = new SyntaxTree(";", syntaxTree, Statement(varEnv));					
+					syntaxTree = new SyntaxTree(";", syntaxTree, Statement(env));					
 				}
 			}
 			while (token.symbol()==TokenClass.IF || token.symbol()==TokenClass.WHILE || token.symbol()==TokenClass.ID || token.symbol()==TokenClass.PRINTLN || token.symbol()==TokenClass.LEFTBRACE);
@@ -167,7 +164,9 @@ public class Parser2 {
 		
 		else if (token.symbol()==TokenClass.ID) {
 			defID=token.lexeme();
-			varEnv = new VariableEnvironment (defID);
+			env.updateEnvProc(defID);
+			Environment varEnv= new Environment(env);
+			// varEnv.updateEnvProc(defID);
 			// normal def
 			getToken();
 			if (token.symbol()!=TokenClass.LEFTPAREN) {
@@ -185,13 +184,14 @@ public class Parser2 {
 				getToken();
 				
 				Type varType = Type();
-				varEnv.updateEnv(varID, new ExpressibleValue (varType, null));
+				varEnv.updateEnvVar(varID);
 				while (token.symbol()==TokenClass.COMMA) {
 					getToken();
 					if (token.symbol()!=TokenClass.ID) {
 						ErrorMessage.print("ID expected, current token is " + token.symbol() + " with the lexeme " + token.lexeme());
 					}
 					varID = token.lexeme();
+					
 					getToken();
 					if (token.symbol()!=TokenClass.COLON) {
 						ErrorMessage.print(": expected, current token is " + token.symbol() + " with the lexeme " + token.lexeme());
@@ -199,7 +199,7 @@ public class Parser2 {
 					getToken();
 					varType = Type();
 					
-					varEnv.updateEnv(varID, new ExpressibleValue (varType, null)); 
+					varEnv.updateEnvVar(varID); 
 				}
 				if (token.symbol()!=TokenClass.RIGHTPAREN) {
 					ErrorMessage.print(") expected, current token is " + token.symbol() + " with the lexeme " + token.lexeme());
@@ -238,7 +238,7 @@ public class Parser2 {
 				}				
 				getToken();
 				// TODO fix this.
-				syntaxTree= new SyntaxTree(";", syntaxTree, new SyntaxTree("RETURN", ListExpr()));
+				syntaxTree= new SyntaxTree(";", syntaxTree, new SyntaxTree("RETURN", ListExpr(varEnv)));
 				if (token.symbol()!=TokenClass.SEMICOLON) {
 					ErrorMessage.print("; expected, current token is " + token.lexeme());
 				}
@@ -249,15 +249,15 @@ public class Parser2 {
 				}
 				getToken();
 			}
+			env.updateEnvProc(defID, syntaxTree, varEnv);
 		}
 		
 		else {
-			varEnv = new VariableEnvironment (defID);
-			VarDef(varEnv);
+			// varEnv = new VariableEnvironment (defID);
+			VarDef(env);
 		}
 		
 		// defDenot = new DefDenot(parameterList, defType, varEnv, syntaxTree);
-		env.updateEnvProc(defID, syntaxTree, varEnv);
 		// syntaxTree.print(defID);
 		System . out . println ();
 	    System . out . println ();
@@ -291,7 +291,7 @@ public class Parser2 {
 		}
 		getToken();
 		
-		int tmp = Integer.parseInt(Literal().root());
+		Literal();
 		
 		if (token.symbol()!=TokenClass.SEMICOLON) {
 			ErrorMessage.print("; expected, current token is " + token.symbol() + " with the lexeme " + token.lexeme());
@@ -337,7 +337,7 @@ public class Parser2 {
 				ErrorMessage.print("( expected, current token is " + token.lexeme());
 			}
 			getToken();
-			SyntaxTree tmpExpr = Expr();
+			SyntaxTree tmpExpr = Expr(env);
 			if (token.symbol()!=TokenClass.RIGHTPAREN) {
 				ErrorMessage.print(") expected, current token is " + token.lexeme());
 			}
@@ -359,7 +359,7 @@ public class Parser2 {
 				ErrorMessage.print("( expected, current token is " + token.lexeme());
 			}
 			getToken();
-			SyntaxTree tmpExpr = Expr();
+			SyntaxTree tmpExpr = Expr(env);
 			if (token.symbol()!=TokenClass.RIGHTPAREN) {
 				ErrorMessage.print(") expected, current token is " + token.lexeme());
 			}
@@ -368,14 +368,18 @@ public class Parser2 {
 		}
 		else if (token.symbol()==TokenClass.ID) {
 			// TODO handle this assignment statement here.
-			SyntaxTree tmpID = new SyntaxTree("ID", new SyntaxTree(token.lexeme()));
+            // SyntaxTree tmpID = new SyntaxTree("ID", new SyntaxTree(token.lexeme()));
 			String varID = token.lexeme();
+			DenotableValue denotVal = env.accessEnv (varID);
+            SyntaxTree tmpID = new SyntaxTree ("ID", 
+                new SyntaxTree (varID,
+                  new SyntaxTree (denotVal.value ())));
 			getToken();
 			if (token.symbol()!=TokenClass.ASSIGN) {
 				ErrorMessage.print("= expected, current token is " + token.lexeme());
 			}
 			getToken();
-			syntaxTree = new SyntaxTree("=", tmpID, ListExpr());
+			syntaxTree = new SyntaxTree("=", tmpID, ListExpr(env));
 			if (token.symbol()!=TokenClass.SEMICOLON) {
 				ErrorMessage.print("; expected, current token is " + token.lexeme());
 			}
@@ -389,7 +393,7 @@ public class Parser2 {
 				ErrorMessage.print("( expected, current token is " + token.lexeme());
 			}
 			getToken();
-			SyntaxTree listExp = ListExpr();
+			SyntaxTree listExp = ListExpr(env);
 			syntaxTree = new SyntaxTree("PRINTLN", listExp);
 			if (token.symbol()!=TokenClass.RIGHTPAREN) {
 				ErrorMessage.print(") expected, current token is " + token.lexeme());
@@ -424,42 +428,42 @@ public class Parser2 {
 		return syntaxTree;
 	}
 	
-	public SyntaxTree Expr() throws java.io.IOException {
+	public SyntaxTree Expr(Environment env) throws java.io.IOException {
 		SyntaxTree syntaxTree=null;
 		// AndExpr {|| AndExpr}
-		syntaxTree = AndExpr();
+		syntaxTree = AndExpr(env);
 		while (token.symbol()==TokenClass.OR) {
 			getToken();
-			syntaxTree = new SyntaxTree("||", syntaxTree, AndExpr());
+			syntaxTree = new SyntaxTree("||", syntaxTree, AndExpr(env));
 		}
 		return syntaxTree;
 	}
 	
-	public SyntaxTree AndExpr() throws java.io.IOException {
+	public SyntaxTree AndExpr(Environment env) throws java.io.IOException {
 		SyntaxTree syntaxTree=null;
 		// RelExpr {&& RelExpr}
-		syntaxTree = RelExpr();
+		syntaxTree = RelExpr(env);
 		while (token.symbol()==TokenClass.AND) {
 			getToken();
-			syntaxTree = new SyntaxTree("AND", syntaxTree, RelExpr());
+			syntaxTree = new SyntaxTree("AND", syntaxTree, RelExpr(env));
 		}
 		return syntaxTree;
 	}
 	
-	public SyntaxTree RelExpr() throws java.io.IOException {
+	public SyntaxTree RelExpr(Environment env) throws java.io.IOException {
 		SyntaxTree syntaxTree=null;
 		// [!] ListExpr [RelOper ListExpr]
 		if (token.symbol()==TokenClass.NOT) {
 			getToken();
-			syntaxTree = new SyntaxTree("NOT", ListExpr());
+			syntaxTree = new SyntaxTree("NOT", ListExpr(env));
 		}
 		else {
-			syntaxTree = ListExpr();
+			syntaxTree = ListExpr(env);
 		}
 		if (token.symbol()==TokenClass.RELOP) {
 			String tmpRel = token.lexeme();
 			getToken();
-			SyntaxTree tmpList = ListExpr();
+			SyntaxTree tmpList = ListExpr(env);
 			syntaxTree = new SyntaxTree(tmpRel, syntaxTree, tmpList);
 		}
 		return syntaxTree;
@@ -475,26 +479,26 @@ public class Parser2 {
 		return syntaxTree;
 	}
 	
-	public SyntaxTree ListExpr() throws java.io.IOException {
+	public SyntaxTree ListExpr(Environment env) throws java.io.IOException {
 		SyntaxTree syntaxTree=null;
 		// AddExpr | AddExpr :: ListExpr
-		syntaxTree = AddExpr();
+		syntaxTree = AddExpr(env);
 		if (token.symbol()==TokenClass.CONS) {
 			getToken();
-			SyntaxTree tmpList = ListExpr();
+			SyntaxTree tmpList = ListExpr(env);
 			syntaxTree = new SyntaxTree("::", syntaxTree, tmpList);
 		}
 		return syntaxTree;
 	}
 	
-	public SyntaxTree AddExpr() throws java.io.IOException {
+	public SyntaxTree AddExpr(Environment env) throws java.io.IOException {
 		SyntaxTree syntaxTree=null;
 		// MulExpr {AddOper MulExpr}
-		syntaxTree = MulExpr();
+		syntaxTree = MulExpr(env);
 		while (token.symbol()==TokenClass.ADDOP) {
 			String tmpAdd = token.lexeme();
 			getToken();
-			syntaxTree= new SyntaxTree(tmpAdd,syntaxTree,MulExpr());
+			syntaxTree= new SyntaxTree(tmpAdd,syntaxTree,MulExpr(env));
 		}
 		return syntaxTree;
 	}
@@ -509,15 +513,15 @@ public class Parser2 {
 		return syntaxTree;
 	}
 	
-	public SyntaxTree MulExpr() throws java.io.IOException {
+	public SyntaxTree MulExpr(Environment env) throws java.io.IOException {
 		// TODO I believe this is correct
 		SyntaxTree syntaxTree=null;
 		// PrefixExpr {MulOper PrefixExpr}
-		syntaxTree = PrefixExpr();
+		syntaxTree = PrefixExpr(env);
 		while (token.symbol()==TokenClass.MULTOP) {
 			String tmpOp = token.lexeme();
 			getToken();
-			syntaxTree = new SyntaxTree(tmpOp, syntaxTree, PrefixExpr());
+			syntaxTree = new SyntaxTree(tmpOp, syntaxTree, PrefixExpr(env));
 		}
 		return syntaxTree;
 	}
@@ -532,16 +536,16 @@ public class Parser2 {
 		return syntaxTree;
 	}
 	
-	public SyntaxTree PrefixExpr() throws java.io.IOException {
+	public SyntaxTree PrefixExpr(Environment env) throws java.io.IOException {
 		// TODO this is wrong, check further
 		SyntaxTree syntaxTree=null;
 		if (token.symbol()==TokenClass.ADDOP) {
 			String addop = token.lexeme();
 			getToken();
-			syntaxTree = new SyntaxTree(addop, SimpleExpr());
+			syntaxTree = new SyntaxTree(addop, SimpleExpr(env));
 		}
 		else {
-			syntaxTree = SimpleExpr();
+			syntaxTree = SimpleExpr(env);
 		}
 		while (token.symbol()==TokenClass.PERIOD) {
 			syntaxTree = new SyntaxTree(".", syntaxTree, ListMethodCall());
@@ -564,7 +568,7 @@ public class Parser2 {
 		return syntaxTree;
 	}
 	
-	public SyntaxTree SimpleExpr() throws java.io.IOException {
+	public SyntaxTree SimpleExpr(Environment env) throws java.io.IOException {
 		SyntaxTree syntaxTree=null;
 		if (token.symbol()==TokenClass.NIL||token.symbol()==TokenClass.INTEGER) {
 			syntaxTree = Literal();
@@ -572,7 +576,7 @@ public class Parser2 {
 		else if (token.symbol()==TokenClass.LEFTPAREN) {
 			// (Expr
 			getToken();
-			syntaxTree = Expr();
+			syntaxTree = Expr(env);
 			if (token.symbol()!=TokenClass.RIGHTPAREN) {
 				ErrorMessage.print(") expected, current token is " + token.symbol() + " with the lexeme " + token.lexeme());
 			}
@@ -583,17 +587,20 @@ public class Parser2 {
 				ErrorMessage.print("ID expected, current token is " + token.symbol() + " with the lexeme " + token.lexeme());
 			}
 			String tmpID = token.lexeme();
-			syntaxTree = new SyntaxTree("ID", new SyntaxTree(token.lexeme()));
+			DenotableValue denotVal = env.accessEnv (tmpID);
+			syntaxTree = new SyntaxTree ("ID", 
+                new SyntaxTree (tmpID,
+                  new SyntaxTree (denotVal.value ())));
 			getToken();
 			if (token.symbol()==TokenClass.LEFTPAREN) {
 				getToken();
 				// should be an optional ListExpr
-				SyntaxTree tmp = ListExpr();
+				SyntaxTree tmp = ListExpr(env);
 				// followed by 0 or more list expr preceded by a comma
 				while (token.symbol()==TokenClass.COMMA) {
 					getToken();
 					// TODO check this
-					tmp = new SyntaxTree(",", tmp, ListExpr());
+					tmp = new SyntaxTree(",", tmp, ListExpr(env));
 				}
 				if (token.symbol()!=TokenClass.RIGHTPAREN) {
 					ErrorMessage.print(") expected, current token is " + token.symbol() + " with the lexeme " + token.lexeme());

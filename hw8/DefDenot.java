@@ -7,9 +7,9 @@ public class DefDenot extends DenotableValue {
   private ArrayList <String> parameterList;
   private SyntaxTree syntaxTree;
   private Type type;
-  private VariableEnvironment env;
+  private Environment env;
 
-  public DefDenot (ArrayList <String> funcParameters, Type funcType, 
+  public DefDenot(ArrayList <String> funcParameters, Type funcType, 
       Environment localEnv, SyntaxTree funcSyntaxTree) {
     parameterList = funcParameters;
     type = funcType;
@@ -17,14 +17,14 @@ public class DefDenot extends DenotableValue {
     syntaxTree  = funcSyntaxTree;
   }
 
-  public ArrayList <String>  parameterList () { return parameterList; }
-  public Type                type ()          { return type; }
-  public Environment 		 environment ()   { return env; }
-  public SyntaxTree          syntaxTree ()    { return syntaxTree; }
+  public ArrayList <String>  parameterList() { return parameterList; }
+  public Type                type()          { return type; }
+  public Environment 		 environment()   { return env; }
+  public SyntaxTree          syntaxTree()    { return syntaxTree; }
 
-  public void print (String functionName) {
-    syntaxTree . print (functionName);
-    env . print ();
+  public void print(String functionName) {
+    syntaxTree.print(functionName);
+    env.print(functionName);
   }
 
 }

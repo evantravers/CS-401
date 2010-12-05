@@ -25,27 +25,45 @@ public class Interpreter {
 	
 	public void D (SyntaxTree syntaxTree) {
 		// D1 ; D2 | Fid ( P ) : T = F | V
-		
+		// TODO complete this
+		if (syntaxTree.root().equals(";")) {
+		  D(syntaxTree.left());
+		  D(syntaxTree.middle());
+		}
 	}
 	
 	public void V (SyntaxTree syntaxTree) {
 		// V1 ; V2 | Vid : T = L
-		
+		// TODO complete this
+		if (syntaxTree.root().equals(";")) {
+		  // assign 
+		  V(syntaxTree.left());
+		  V(syntaxTree.middle());
+		}
 	}
 	
 	public void T (SyntaxTree syntaxTree) {
 		// Int | List
-		
+		if (syntaxTree.root().equals("INT")) {
+		    // return int
+		}
+		else {
+		    // return list
+		}		
 	}
 	
 	public void P (SyntaxTree syntaxTree) {
 		// P1 Id : T | ε
-
+        
 	}
 	
 	public void F (SyntaxTree syntaxTree) {
 		// V S return E | S return E | V return E | return E
-
+        if (syntaxTree.equals("VAR")) {
+            V(syntaxTree.left());
+            S(syntaxTree.middle());
+            E(syntaxTree.right());
+        }
 	}
 	
 	public void S (SyntaxTree syntaxTree) {
@@ -77,8 +95,9 @@ public class Interpreter {
 		}
 		else if (syntaxTree.root().equals("=")) {
 			// TODO make the value on the left equal the variable on the right
-			System.out.println(syntaxTree.left().left()+"="+E(syntaxTree.middle()));
-			// store.update(syntaxTree.left().location(), E(syntaxTree.middle()));
+			// System.out.println(syntaxTree.left().left().left().root() + " ~ " + E(syntaxTree.middle()));
+			store.update (syntaxTree.left().varLoc(), E(syntaxTree.middle()));
+			System.out.println(store);
 		}
 		else {
 			ErrorMessage.print("PAAAANTS");
@@ -106,18 +125,58 @@ public class Interpreter {
 				return 0;
 			}
 		}
+		else if (syntaxTree.root().equals("+")) {
+			return E(syntaxTree.left()) + E(syntaxTree.middle());
+		}
+		else if (syntaxTree.root().equals("-")) {
+			return E(syntaxTree.left()) - E(syntaxTree.middle());
+		}
+		else if (syntaxTree.root().equals(">=")) {
+			if (E(syntaxTree.left())>=E(syntaxTree.middle())) {
+				return 1;
+			}
+			else {
+				return 0;
+			}
+		}
+		else if (syntaxTree.root().equals("<=")) {
+			if (E(syntaxTree.left())<=E(syntaxTree.middle())) {
+				return 1;
+			}
+			else {
+				return 0;
+			}
+		}
+		else if (syntaxTree.root().equals(">")) {
+			if (E(syntaxTree.left())>E(syntaxTree.middle())) {
+				return 1;
+			}
+			else {
+				return 0;
+			}
+		}
+		else if (syntaxTree.root().equals("<")) {
+			if (E(syntaxTree.left())<E(syntaxTree.middle())) {
+				return 1;
+			}
+			else {
+				return 0;
+			}
+		}
 		else if (syntaxTree.root().equals("ID")) {
-			System.out.println("FOUND A FRAKKIN ID");
+		    System.out.println("ID finds this: " + syntaxTree.varLoc());
+			return store.access(syntaxTree.varLoc());
 		}
 		else {
 			return L(syntaxTree);
 		}
-		return 0;
 	}
 	
 	public void A (SyntaxTree syntaxTree) {
 		// A E | ε
-
+        if (syntaxTree.root().equals("ARG")) {
+            
+        }
 	}
 	
 	public int L (SyntaxTree syntaxTree) {
@@ -126,7 +185,7 @@ public class Interpreter {
 			return 0;
 		}
 		else {
-			return Integer.parseInt(syntaxTree.root());
+			return Integer.parseInt(syntaxTree.root().toString());
 		}
 	}
 }

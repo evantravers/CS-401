@@ -5,7 +5,7 @@
 
 class SyntaxTree {
 
-  private String node;
+  private Object node;
   private SyntaxTree left;
   private SyntaxTree middle;
   private SyntaxTree right;
@@ -16,20 +16,20 @@ class SyntaxTree {
     this (null, null, null, null);
   }
 
-  public SyntaxTree (String nodeValue) {
+  public SyntaxTree (Object nodeValue) {
     this (nodeValue, null, null, null);
   }
 
-  public SyntaxTree (String nodeValue, SyntaxTree leftTree) {
+  public SyntaxTree (Object nodeValue, SyntaxTree leftTree) {
     this (nodeValue, leftTree, null, null);
   }
 
-  public SyntaxTree (String nodeValue, SyntaxTree leftTree, 
+  public SyntaxTree (Object nodeValue, SyntaxTree leftTree, 
       SyntaxTree middleTree) {
     this (nodeValue, leftTree, middleTree, null);
   }
 
-  public SyntaxTree (String nodeValue, SyntaxTree leftTree, 
+  public SyntaxTree (Object nodeValue, SyntaxTree leftTree, 
       SyntaxTree middleTree, SyntaxTree rightTree) {
     node   = nodeValue;
     left   = leftTree;
@@ -37,9 +37,24 @@ class SyntaxTree {
     right  = rightTree;
   }
 
+  // public int constValue()
+  // {
+  //    return (Integer)left().root().intValue();
+  // }
+  
+  public Location varLoc()
+  {
+  	return (Location)left().left().root();
+  }
+  
+  public SyntaxTree procBody()
+  {
+  	return left().left().left();
+  }
+
   // selector functions
 
-  public String root ()       { return node; }
+  public Object root ()       { return node; }
   public SyntaxTree left ()   { return left; }
   public SyntaxTree middle () { return middle; }
   public SyntaxTree right ()  { return right; }
@@ -61,7 +76,7 @@ class SyntaxTree {
 
   public String toString () {
     if (left == null) 
-      return node;
+      return node.toString();
     else if (middle == null)
       return "(" + node + " " + left + ")";
     else if (right == null)
