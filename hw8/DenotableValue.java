@@ -23,7 +23,7 @@ public class DenotableValue {
 
   public String toString () {
     String printString = Category . toString (category);
-    if (category == Category . CONSTANT || category == Category . VARIABLE) {
+    if (category == Category . CONSTANT || category == Category . INT || category == Category . LIST) {
         printString = printString + "(" + value + ")";
     }
     return printString;

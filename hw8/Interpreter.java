@@ -125,11 +125,21 @@ public class Interpreter {
 				return 0;
 			}
 		}
-		else if (syntaxTree.root().equals("+")) {
-			return E(syntaxTree.left()) + E(syntaxTree.middle());
+		else if (syntaxTree.root().equals("==")) {
+			if (E(syntaxTree.left())>=E(syntaxTree.middle())) {
+				return 1;
+			}
+			else {
+				return 0;
+			}
 		}
-		else if (syntaxTree.root().equals("-")) {
-			return E(syntaxTree.left()) - E(syntaxTree.middle());
+		else if (syntaxTree.root().equals("!=")) {
+			if (E(syntaxTree.left())<=E(syntaxTree.middle())) {
+				return 1;
+			}
+			else {
+				return 0;
+			}
 		}
 		else if (syntaxTree.root().equals(">=")) {
 			if (E(syntaxTree.left())>=E(syntaxTree.middle())) {
@@ -162,6 +172,18 @@ public class Interpreter {
 			else {
 				return 0;
 			}
+		}
+		else if (syntaxTree.root().equals("+")) {
+			return E(syntaxTree.left()) + E(syntaxTree.middle());
+		}
+		else if (syntaxTree.root().equals("-")) {
+			return E(syntaxTree.left()) - E(syntaxTree.middle());
+		}
+		else if (syntaxTree.root().equals("*")) {
+			return E(syntaxTree.left()) * E(syntaxTree.middle());
+		}
+		else if (syntaxTree.root().equals("/")) {
+			return E(syntaxTree.left()) / E(syntaxTree.middle());
 		}
 		else if (syntaxTree.root().equals("ID")) {
 		    System.out.println("ID finds this: " + syntaxTree.varLoc());

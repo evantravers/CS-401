@@ -50,16 +50,16 @@ public class Environment {
   }
 
   public void updateEnvVar (String id) {
-    updateEnv (id, new DenotableValue (Category . VARIABLE, newLocation ()));
+    updateEnv (id, new DenotableValue (Category . INT, newLocation ()));
   }
 
   public void updateEnvProc (String id) { // denotable value filled in later
-    updateEnv (id, new DenotableValue (Category . PROCEDURE, null));
+    updateEnv (id, new DenotableValue (Category . DEF, null));
   }
 
   public void updateEnvProc (String id, SyntaxTree syntaxTree, Environment env) {
     updateEnv (id, 
-      new DenotableValue (Category . PROCEDURE, new Procedure (env, syntaxTree)));
+      new DenotableValue (Category . DEF, new Procedure (env, syntaxTree)));
   }
 
   public void updateEnv (String id, DenotableValue denotableValue) {
@@ -97,7 +97,7 @@ public class Environment {
         System . out . print (" ");
       DenotableValue entryDenotVal = (DenotableValue) envEntry . getValue ();
       System . out . println (entryDenotVal);
-      if (entryDenotVal . category () == Category . PROCEDURE)
+      if (entryDenotVal . category () == Category . DEF)
 	procedureList . put (entryId, entryDenotVal . value ());
     }
     Iterator procIterator = procedureList . entrySet () . iterator ();
