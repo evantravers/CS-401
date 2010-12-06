@@ -1,6 +1,6 @@
 // Store.java
 
-// Store is a class to model the memory store of PL/0 programs.
+// Store is a class to model the memory store of MicroScala programs.
 
 public class Store {
 

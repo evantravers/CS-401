@@ -184,7 +184,12 @@ public class Parser2 {
 				getToken();
 				
 				Type varType = Type();
-				varEnv.updateEnvVar(varID);
+				if (varType==Type.INT) {
+        		    varEnv.updateEnvVar(varID);
+        		}
+        		else {
+        		    varEnv.updateEnvList(varID);
+        		}
 				while (token.symbol()==TokenClass.COMMA) {
 					getToken();
 					if (token.symbol()!=TokenClass.ID) {
@@ -261,6 +266,7 @@ public class Parser2 {
 		// syntaxTree.print(defID);
 		System . out . println ();
 	    System . out . println ();
+	    
 		return syntaxTree;
 	}
 		
@@ -299,7 +305,12 @@ public class Parser2 {
 		getToken();
 		// TODO this needs to have the value of the var in the null spot, taken from the literal.
 		// env.updateEnvVar(varId);
-		env.updateEnvVar(varId);
+		if (varType==Type.INT) {
+		    env.updateEnvVar(varId);
+		}
+		else {
+		    env.updateEnvList(varId);
+		}
 	}
 	
 	public Type Type() throws java.io.IOException {
@@ -606,6 +617,7 @@ public class Parser2 {
 					ErrorMessage.print(") expected, current token is " + token.symbol() + " with the lexeme " + token.lexeme());
 				}
 				getToken();
+				// TODO manage this
 				syntaxTree = new SyntaxTree("APPLY", syntaxTree, tmp);
 				return syntaxTree;
 			}

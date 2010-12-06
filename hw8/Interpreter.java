@@ -68,7 +68,7 @@ public class Interpreter {
 	
 	public void S (SyntaxTree syntaxTree) {
 		// S1 ; S2	| Vid = E | if E S | if E S1	else S2	|while E S | println E
-		System.out.println("current: " + syntaxTree);
+		// System.out.println("current: " + syntaxTree);
 		if (syntaxTree.root().equals(";")) {
 			S(syntaxTree.left());
 			S(syntaxTree.middle());
@@ -97,10 +97,7 @@ public class Interpreter {
 			// TODO make the value on the left equal the variable on the right
 			// System.out.println(syntaxTree.left().left().left().root() + " ~ " + E(syntaxTree.middle()));
 			store.update (syntaxTree.left().varLoc(), E(syntaxTree.middle()));
-			System.out.println(store);
-		}
-		else {
-			ErrorMessage.print("PAAAANTS");
+			// System.out.println(store);
 		}
 	}
 	
@@ -185,8 +182,23 @@ public class Interpreter {
 		else if (syntaxTree.root().equals("/")) {
 			return E(syntaxTree.left()) / E(syntaxTree.middle());
 		}
+		else if (syntaxTree.root().equals("::")) {
+		    return 0; 
+		}
+		else if (syntaxTree.root().equals(".")) {
+		    // we are either doing a head or tail
+		    int [] tmp = (int []) store.access(syntaxTree.left.varLoc());
+		    if (syntaxTree.middle().equals("head")) {
+		        // get the first element from array in syntaxTree.left()
+		        return tmp[0];
+		    }
+		    else {
+		        // get the last element from the array in syntaxTree.left()
+		        return tmp[tmp.length];
+		    }
+		}
 		else if (syntaxTree.root().equals("ID")) {
-		    System.out.println("ID finds this: " + syntaxTree.varLoc());
+            // System.out.println("ID finds this: " + syntaxTree.varLoc());
 			return store.access(syntaxTree.varLoc());
 		}
 		else {

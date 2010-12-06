@@ -1,6 +1,6 @@
 // Environment.java
 
-// Environment is a class to represent the environment for PL/0 programs.
+// Environment is a class to represent the environment for MicroScala programs.
 
 import java.util.*;
 
@@ -51,6 +51,10 @@ public class Environment {
 
   public void updateEnvVar (String id) {
     updateEnv (id, new DenotableValue (Category . INT, newLocation ()));
+  }
+  
+  public void updateEnvList (String id) {
+      updateEnv (id, new DenotableValue (Category . LIST, newLocation ()));
   }
 
   public void updateEnvProc (String id) { // denotable value filled in later
