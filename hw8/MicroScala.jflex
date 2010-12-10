@@ -35,7 +35,7 @@ Integer    = [:digit:] [:digit:]*
 "<"		{ echo (); return new Token (TokenClass . RELOP, "<"); }
 "<="		{ echo (); return new Token (TokenClass . RELOP, "<="); }
 ">"		{ echo (); return new Token (TokenClass . RELOP, ">"); }
-">="		{ echo (); return new Token (TokenClass . RELOP, ">="); }
+">="		{ echo (); return new Token (TokenClass . RELOP, ">"); }
 "=="		{ echo (); return new Token (TokenClass . RELOP, "=="); }
 "!="		{ echo (); return new Token (TokenClass . RELOP, "!="); }
 "::"		{ echo (); return new Token (TokenClass . CONS); }

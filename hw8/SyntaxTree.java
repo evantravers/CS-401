@@ -1,4 +1,3 @@
-// etravers@uab.edu
 // SyntaxTree.java
 
 // SyntaxTree is a class to represent a node of a ternary syntax tree.
