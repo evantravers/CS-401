@@ -21,4 +21,3 @@ object Test2
     println (my_list_tl . head);
   }
 }
- 

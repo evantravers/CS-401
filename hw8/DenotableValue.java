@@ -1,32 +1,17 @@
-// DenotableValue.java
+import java.util.*;
 
 // DenotableValue is a class to represent the denotable values of identifiers
-// in a Micro Scala program.
+// a MicroScala program. A denotable value is either an expressible value or a 
+// function denotation.
 
-public class DenotableValue {
+class DenotableValue {
 
-  private int category;
-  private Object value;
+  protected Type type;
 
-  public DenotableValue (int category, Object value) {
-    this.category = category;
-    this.value = value;
-  }
-
-  public int category () {
-      return category;
-  }
-
-  public Object value () {
-      return value;
-  }
+  public Type type () { return type; }
 
   public String toString () {
-    String printString = Category . toString (category);
-    if (category == Category . CONSTANT || category == Category . INT || category == Category . LIST) {
-        printString = printString + "(" + value + ")";
-    }
-    return printString;
+    return type . toString ();
   }
 
 }

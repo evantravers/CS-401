@@ -1,3 +1,7 @@
+// Environment.java
+
+// Environment is a class to represent the environment for MicroScala programs.
+
 import java.util.*;
 
 class Environment {
@@ -7,10 +11,6 @@ class Environment {
 
   public Environment () {
     map = new TreeMap <String, DenotableValue> ();
-  }
-  
-  public Environment (Environment env) {
-      map = env.map();
   }
 
   public TreeMap <String, DenotableValue> map () { return map; }
@@ -26,15 +26,6 @@ class Environment {
     if (id . length () > maxIdLength)
       maxIdLength = id . length ();
     map . put (id, denotVal);
-  }
-  
-  public void updateVal (String id, DenotableValue denotVal) {
-      DenotableValue currentDenotVal = map . get (id);
-      // if (currentDenotVal == null)
-      //           ErrorMessage . print ("Identifier " + id + " does not exist");
-      if (id . length () > maxIdLength)
-          maxIdLength = id . length ();
-      map . put (id, denotVal);
   }
 
   public void print (String blockName) {
@@ -96,58 +87,96 @@ class Environment {
       funcEntry . getValue () . print (funcId);
     }
   }
-  
-  public void store (String blockName) {
-      System . out . println ();
-      System . out . println ();
-      System . out . println ("Identifier Table for " + blockName);
-      System . out . print ("---------------------");
-      for (int i = 0; i < blockName . length (); i++) 
-        System . out . print ("-");
-      System . out . println ();
-      System . out . println ();
-      System . out . print ("Id");
-      for (int i = 0; i < maxIdLength - 2; i++)
-        System . out . print (" ");
-      System . out . print ("  ");
-      System . out . print ("Category");
-      System . out . print ("  ");
-      System . out . print ("Type");
-      System . out . print ("  ");
-      System . out . println ("Value");
-      System . out . print ("--");
-      for (int i = 0; i < maxIdLength - 2; i++)
-        System . out . print (" ");
-      System . out . print ("  ");
-      System . out . print ("--------");
-      System . out . print ("  ");
-      System . out . print ("----");
-      System . out . print ("  ");
-      System . out . println ("-----");
-      Iterator <Map . Entry <String, DenotableValue>> envIterator = 
-        map . entrySet () . iterator ();
-      TreeMap <String, FunctionDenot> functionList = 
-        new TreeMap <String, FunctionDenot> ();
-      while (envIterator . hasNext ()) {
-        Map . Entry <String, DenotableValue> envEntry = envIterator . next ();
-        String entryId = envEntry . getKey ();
-        System . out . print (entryId);
-        for (int i = 0; i <= maxIdLength - entryId . length (); i++)
-          System . out . print (" ");
-        System . out . print (" ");
-        DenotableValue entryDenotVal = envEntry . getValue ();
-        if (entryDenotVal instanceof ExpressibleValue) { // variable
-          System . out . print ("variable");
-          System . out . print ("  ");
-          System . out . println (entryDenotVal);
-        }
-        else { // function
-          System . out . print ("function");
-          System . out . print ("  ");
-          System . out . println (entryDenotVal . type ());
-  	functionList . put (entryId, (FunctionDenot) entryDenotVal);
-        }
-      }
+
+}
+
+// DenotableValue is a class to represent the denotable values of identifiers
+// a MicroScala program. A denotable value is either an expressible value or a 
+// function denotation.
+
+class DenotableValue {
+
+  protected Type type;
+
+  public Type type () { return type; }
+
+  public String toString () {
+    return type . toString ();
+  }
+
+}
+
+// ExpressibleValue is a class to represent the values of expressions in
+// a MicroScala program.
+
+class ExpressibleValue extends DenotableValue {
+
+  private Object value; // used as parent class of Integer and ArrayList
+
+  public ExpressibleValue (Type type, Object value) {
+    this . type  = type;
+    this . value = value;
+  }
+
+  public Object value () { return value; }
+
+  public String toString () { return type + "  " + value; }
+
+}
+
+// FunctionDenot is a class to represent the components of a MicroScala 
+// function.
+
+class FunctionDenot extends DenotableValue {
+
+  private ArrayList <String> parameter;
+  private Environment env;
+  private SyntaxTree syntaxTree;
+
+  public FunctionDenot (ArrayList <String> funcParameter, Type funcType,
+      Environment funcEnv, SyntaxTree funcSyntaxTree) {
+    parameter = funcParameter;
+    type = funcType;
+    env = funcEnv;
+    syntaxTree  = funcSyntaxTree;
+  }
+
+  public ArrayList <String> parameterList () { return parameter; }
+  public Environment environment () { return env; }
+  public SyntaxTree functionBody () { return syntaxTree; }
+
+  public void print (String functionName) {
+    syntaxTree . print (functionName);
+    env . print (functionName);
+  }
+
+}
+
+// Type is a class to represent the types of values in a MicroScala program.
+
+class Type {
+
+  public static final int INTEGER = 0;
+  public static final int LIST    = 1;
+  public static final int BOOLEAN = 2;
+  public static final int VOID    = 3;
+
+  private int type;
+
+  public Type (int type) {
+    this . type = type;
+  }
+
+  public int type () { return type; }
+
+  public String toString () {
+    switch (type) {
+      case INTEGER : return "int ";
+      case LIST    : return "list";
+      case BOOLEAN : return "bool";
+      case VOID    : return "void";
+      default      : return null;
     }
+  }  
 
 }

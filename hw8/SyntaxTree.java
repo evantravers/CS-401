@@ -1,11 +1,10 @@
-// etravers@uab.edu
 // SyntaxTree.java
 
 // SyntaxTree is a class to represent a node of a ternary syntax tree.
 
 class SyntaxTree {
 
-  private Object node;
+  private String node;
   private SyntaxTree left;
   private SyntaxTree middle;
   private SyntaxTree right;
@@ -16,20 +15,20 @@ class SyntaxTree {
     this (null, null, null, null);
   }
 
-  public SyntaxTree (Object nodeValue) {
+  public SyntaxTree (String nodeValue) {
     this (nodeValue, null, null, null);
   }
 
-  public SyntaxTree (Object nodeValue, SyntaxTree leftTree) {
+  public SyntaxTree (String nodeValue, SyntaxTree leftTree) {
     this (nodeValue, leftTree, null, null);
   }
 
-  public SyntaxTree (Object nodeValue, SyntaxTree leftTree, 
+  public SyntaxTree (String nodeValue, SyntaxTree leftTree, 
       SyntaxTree middleTree) {
     this (nodeValue, leftTree, middleTree, null);
   }
 
-  public SyntaxTree (Object nodeValue, SyntaxTree leftTree, 
+  public SyntaxTree (String nodeValue, SyntaxTree leftTree, 
       SyntaxTree middleTree, SyntaxTree rightTree) {
     node   = nodeValue;
     left   = leftTree;
@@ -37,24 +36,9 @@ class SyntaxTree {
     right  = rightTree;
   }
 
-  // public int constValue()
-  // {
-  //    return (Integer)left().root().intValue();
-  // }
-  
-  public Location varLoc()
-  {
-  	return (Location)left().left().root();
-  }
-  
-  public SyntaxTree procBody()
-  {
-  	return left().left().left();
-  }
-
   // selector functions
 
-  public Object root ()       { return node; }
+  public String root ()       { return node; }
   public SyntaxTree left ()   { return left; }
   public SyntaxTree middle () { return middle; }
   public SyntaxTree right ()  { return right; }
@@ -76,7 +60,7 @@ class SyntaxTree {
 
   public String toString () {
     if (left == null) 
-      return node.toString();
+      return node;
     else if (middle == null)
       return "(" + node + " " + left + ")";
     else if (right == null)

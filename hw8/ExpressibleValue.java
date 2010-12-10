@@ -1,22 +1,14 @@
-// ExpressibleValue is a class to represent the values of expressions in
-// a MicroScala program.
-
 class ExpressibleValue extends DenotableValue {
 
-  private Type evtype;
-  private Value evvalue;
+  private Object value; // used as parent class of Integer and ArrayList
 
-  public ExpressibleValue (Type type, Value value) {
-    evtype  = type;
-    evvalue = value;
+  public ExpressibleValue (Type type, Object value) {
+    this . type  = type;
+    this . value = value;
   }
 
-  public Type type () { return evtype; }
+  public Object value () { return value; }
 
-  public Value value () { return evvalue; }
-
-  public String toString () { 
-    return evtype + "  " + evvalue; 
-  }
+  public String toString () { return type + "  " + value; }
 
 }
